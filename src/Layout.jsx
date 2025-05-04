@@ -1,0 +1,99 @@
+import { Link, Outlet } from "react-router-dom";
+import logo from './assets/logo.png';
+import user from './assets/user.jpg';
+
+export default function Layout() {
+    return <>
+        <header>
+            {/*  */}
+        </header>
+
+        <main>
+            <nav id="side">
+                <section className="logo">
+                    <ol>
+                        <img src={logo} alt="logo" />
+                    </ol>
+                    <ol className="lilside">
+                        <h4>SKYouthSys..</h4>
+                        <p>Salaan</p>
+                    </ol>
+                </section>
+                <section id="navlinks_cont">
+                    <div className="wraplink">
+
+                        <div className="links_cont headside">
+
+                            <Link to={'/'} title="Overview">
+                                <li>
+                                    <i className="fas fa-tachometer-alt"></i>
+                                    <p className="lilside">Overview</p>
+                                </li>
+                            </Link>
+
+                            <Link to={'/youths'} title="Youths">
+                                <li>
+                                    <i className="fas fa-users"></i>
+                                    <p className="lilside">Youths</p>
+                                </li>
+                            </Link>
+
+                            <Link to={'/accounts'} title="Accounts">
+                                <li>
+
+                                    <i className="fas fa-user-circle"></i>
+                                    <p className="lilside">Accounts</p>
+                                </li>
+                            </Link>
+
+                            <Link to={'/post'} title="Post">
+                                <li>
+                                    <i className="fas fa-paper-plane"></i>
+                                    <p className="lilside">Post</p>
+                                </li>
+                            </Link>
+
+                            <Link to={'/notification'} title="Notification">
+                                <li>
+
+                                    <i className="fas fa-bell"></i>
+                                    <p className="lilside">Notification</p>
+                                </li>
+                            </Link>
+
+                        </div>
+                        <div className="links_cont footside">
+
+                            <Link to={'/settings'} title="Settings">
+                                <li>
+                                    <i className="fas fa-cogs"></i>
+                                    <p className="lilside">Settings</p>
+                                </li>
+                            </Link>
+
+                            <ol className="userpic">
+                                <div>
+                                    <img src={user} alt="" />
+                                </div>
+                                <div className="name lilside">
+                                    <h4>Hikusama</h4>
+                                    <p>Admin</p>
+                                </div>
+                            </ol>
+                        </div>
+                    </div>
+                    <div className="f"></div>
+                    <div className="s"></div>
+                </section>
+                <section>
+
+                </section>
+            </nav>
+            <div className="contents">
+                <Outlet />
+            </div>
+        </main>
+
+
+    </>
+}
