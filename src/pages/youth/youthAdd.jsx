@@ -47,11 +47,17 @@ export default function FormAdd() {
         const errorsObj = {};
     
         if (educbgForm.level.trim() === "") {
-            errorsObj.level = 'This field school level is empty.';
+            errorsObj.level = 'This field is empty.';
         }
     
         if (educbgForm.nameOfSchool.trim() === "") {
-            errorsObj.nameOfSchool = 'This field school name is empty.';
+            errorsObj.nameOfSchool = 'This field is empty.';
+        }
+        if (educbgForm.periodOfAttendance.trim() === "") {
+            errorsObj.periodOfAttendance = 'This field is empty.';
+        }
+        if (educbgForm.yearGraduate.trim() === "") {
+            errorsObj.yearGraduate = 'This field is empty.';
         }
     
         if (Object.keys(errorsObj).length > 0) {
@@ -470,17 +476,21 @@ export default function FormAdd() {
                                     </div>
                                     <div>
                                         <label htmlFor="poa">Period of Attendance</label>
-                                        <input type="text" id='poa' placeholder='Period of Attendance' className={errors.periodOfAttendance ? 'errorInput' : ''}
+                                        <input type="date" id='poa' placeholder='Period of Attendance' className={errors.periodOfAttendance ? 'errorInput' : ''}
                                             value={educbgForm.periodOfAttendance}
                                             onChange={(e) => setEducBgForm({ ...educbgForm, periodOfAttendance: e.target.value })}
                                         />
+                                    {errors.periodOfAttendance && <p className="error">{errors.periodOfAttendance}</p>}
+
                                     </div>
                                     <div>
                                         <label htmlFor="yg">Yeak Graduate</label>
-                                        <input type="text" id='yg' placeholder='Yeak Graduate' className={errors.yearGraduate ? 'errorInput' : ''}
+                                        <input type="number" id='yg' placeholder='Yeak Graduate' className={errors.yearGraduate ? 'errorInput' : ''}
                                             value={educbgForm.yearGraduate}
                                             onChange={(e) => setEducBgForm({ ...educbgForm, yearGraduate: e.target.value })}
                                         />
+                                    {errors.yearGraduate && <p className="error">{errors.yearGraduate}</p>}
+
                                     </div>
                                 </div>
                                 <div className="addCivic">
@@ -513,7 +523,9 @@ export default function FormAdd() {
                                         ))}
                                     </ol>
                                 </div>
-
+                                <div className="clean">
+                                    <button onClick={()=>setEducBg([])} className={`clr ${educBg.length === 0 && 'clrG'}`}>Clear</button>
+                                </div>
 
                             </section>
                         </div>
