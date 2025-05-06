@@ -457,7 +457,7 @@ select:focus,
     color: white;
 }
 .actionStepper button {
-    width: 5rem;
+    width: 6rem;
     padding: .5rem 1.5rem;
     gap: 50%;
     border-radius: .8rem;
@@ -713,7 +713,13 @@ input[type=number]::-webkit-outer-spin-button {
     border: none;
     outline: solid 1px rgba(255, 255, 255, 0.503);
     transition: .3s;
+
 }
+.addCivic button,
+.addCivic button{
+    width: 8rem;
+}
+
 
 .addCivic button:hover,
 .addEducBg button:hover{
@@ -721,7 +727,9 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: rgba(22, 79, 122, 0.384);
 
 }
-
+.addCivic button i{
+    font-size: .8rem;
+}
 body .op{
     opacity: 50%;
     cursor: default;
@@ -745,12 +753,14 @@ body .op{
     align-items: center;
     gap: .2rem;
 }
+.clean2,
 .clean{
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 2rem;
 }
+.clean2 button ,
 .clean button {
     background-color: #424242;
     color: white;
@@ -760,10 +770,53 @@ body .op{
     outline: solid 1px rgba(255, 255, 255, 0.448);
     cursor: pointer;
 }
+.clean2 button:hover,
 .clean button:hover{
     background-color: #42424271;
 
 }
+
+.clrG2,
 .clrG{
     display: none;
+}
+.fin{
+    width: 60%;
+    display: grid;
+    align-items: start;
+}
+.laststep > *{
+    padding-bottom: 2rem ;
+}
+.laststep h3{
+    margin-bottom: .2rem;
+}
+.laststep li{
+    padding-left: 1rem;
+    list-style: none;
+}
+.laststep{
+    margin-top: 2rem;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.laststep p{
+    font-size: .8rem;
+    color: rgba(255, 255, 255, 0.512);
+}
+.expand{
+    display: grid;
+    place-items: center;
+    width: 100% !important;
+}
+.expand ol{
+    width: 100%;
+}
+.expand ol li:nth-child(1){
+    text-wrap: nowrap;
+}
+.expand ol p{
+    padding-left: 1rem;
 }

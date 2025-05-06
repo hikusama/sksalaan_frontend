@@ -7,11 +7,11 @@ export default function FormAdd() {
     // const [isS4FormPass, setS4FormPass] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isNext, setIsNext] = useState("Next");
+    const [isAdd, setIsAdd] = useState("Add");
     const [step, setStep] = useState(1);
     const [errors, setErrors] = useState({})
 
-    const [civic, setCivic] = useState([])
-    const [educBg, setEducBg] = useState([])
+
     const [skills, setSkills] = useState([])
     const [inputSkill, setInputSkill] = useState("");
 
@@ -32,8 +32,8 @@ export default function FormAdd() {
     })
 
     const [civicForm, setCivicForm] = useState({
-        nameOfOrganization: '',
-        addressOfOrganization: '',
+        organization: '',
+        address: '',
         start: '',
         end: '',
         yearGraduated: '',
@@ -43,38 +43,19 @@ export default function FormAdd() {
         setSkills(prev => prev.filter((_, index) => index !== indexToRemove));
     };
 
-    const addEducBg = () => {
-        const errorsObj = {};
-    
-        if (educbgForm.level.trim() === "") {
-            errorsObj.level = 'This field is empty.';
-        }
-    
-        if (educbgForm.nameOfSchool.trim() === "") {
-            errorsObj.nameOfSchool = 'This field is empty.';
-        }
-        if (educbgForm.periodOfAttendance.trim() === "") {
-            errorsObj.periodOfAttendance = 'This field is empty.';
-        }
-        if (educbgForm.yearGraduate.trim() === "") {
-            errorsObj.yearGraduate = 'This field is empty.';
-        }
-    
-        if (Object.keys(errorsObj).length > 0) {
-            setErrors(errorsObj);
-            return;
-        }
-    
-        setEducBg(prev => [...prev, educbgForm]);
-        setErrors({});
-        setEducBgForm({
-            level: '',
-            nameOfSchool: '',
-            periodOfAttendance: '',
-            yearGraduate: '',
-        });
+    const addEducBg = async () => {
+        setIsLoading(true);
+        await validate('/api/vals3b', educbgForm, step);
+        setIsLoading(false);
     };
-    
+
+    const addCivic = async () => {
+        setIsLoading(true);
+        await validate('/api/vals4b', civicForm, step);
+        setIsLoading(false);
+    };
+
+
     const [formDataS1, setFormdataS1] = useState({
         firstname: "",
         middlename: "",
@@ -98,10 +79,8 @@ export default function FormAdd() {
         skills: []
     })
 
-    const [formDataS3, setFormdataS3] = useState({
-        educbgArray: []
-    })
-
+    const [civic, setCivic] = useState([])
+    const [educBg, setEducBg] = useState([])
 
 
 
@@ -111,22 +90,58 @@ export default function FormAdd() {
             body: JSON.stringify(form),
         });
         const data = await res.json()
-
-        if (data.errors) {
-            setErrors(data.errors)
+            const isFormEmpty = Object.values(form).every(value => {
+                if (typeof value === 'string') {
+                    return value.trim() === '';
+                }
+                return value === null || value === undefined || value.length === 0;
+            }); 
+        if (data.errors || !res.ok) {
+            if (!isFormEmpty) {
+                if (url === '/api/vals3b') {
+                    setEducBg([]);
+                } else if (url === '/api/vals4b') {
+                    setCivic([]);
+                }
+            }
+            if (data.errors) {   
+                setErrors(data.errors)
+            }
         } else {
             setErrors({})
-            // setS1FormPass(true)
+
+            if (!isFormEmpty) {
+
+                if (url === '/api/vals3b') {
+                    setEducBg(prev => [...prev, educbgForm]);
+                    setEducBgForm({
+                        level: '',
+                        nameOfSchool: '',
+                        pod: '',
+                        yearGraduate: '',
+                    });
+                } else if (url === '/api/vals4b') {
+                    setCivic(prev => [...prev, civicForm]);
+                    setCivicForm({
+                        organization: '',
+                        address: '',
+                        start: '',
+                        end: '',
+                        yearGraduated: '',
+                    });
+                }
+            }
             setStep(e)
         }
         setIsLoading(false)
+
         console.log(data);
     }
 
 
 
     let optEducbg = <option value="">Max</option>
-    let addeducbgButton = <button onClick={addEducBg}>Add</button>
+    let addeducbgButton = <button onClick={addEducBg}>{isAdd}</button>
     if (educBg.length === 0) {
         optEducbg = <option value="Elementary">Elementary</option>
     } else if (educBg.length === 1) {
@@ -151,9 +166,10 @@ export default function FormAdd() {
         } else if (step === 2) {
             validate('/api/vals2', formDataS2, e)
         } else if (step === 3) {
-            validate('/api/vals3', formDataS3, e)
+            validate('/api/vals3', { educBg: [educBg] }, e)
+
         } else if (step === 4) {
-            // validate('/api/vals4', formDataS4, e)
+            validate('/api/vals4', { civic: [civic] }, e)
 
         }
 
@@ -164,12 +180,7 @@ export default function FormAdd() {
     //       educBg: educBg
     //     }));
     //   }, [civic]);
-    useEffect(() => {
-        setFormdataS3(prev => ({
-            ...prev,
-            educBg: educBg
-        }));
-    }, [educBg]);
+
     useEffect(() => {
         setFormdataS2(prev => ({
             ...prev,
@@ -180,10 +191,13 @@ export default function FormAdd() {
     useEffect(() => {
         if (isLoading) {
             setIsNext(<i className="fas fa-spinner fa-spin"></i>);
+            setIsAdd(<i className="fas fa-spinner fa-spin"></i>);
         } else {
             setIsNext(step === 5 ? 'Confirm' : 'Next');
+            setIsAdd('Add');
         }
     }, [isLoading, step]);
+
 
     return <>
         <div className="stepsHeader">
@@ -191,11 +205,11 @@ export default function FormAdd() {
             <div className="steps">
                 <ol className="step1 onStep" onClick={() => setStep(1)}>1</ol>
                 <div className={`line s1`}><li><p className={`${step >= 2 ? 'onStepLine' : ''}`}></p></li></div>
-                <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} onClick={() => setStep(2)}>2</ol>
+                <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} onClick={() => step >= 2 && setStep(2)}>2</ol>
                 <div className={`line s2`}><li><p className={`${step >= 3 ? 'onStepLine' : ''}`}></p></li></div>
-                <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} onClick={() => setStep(3)}>3</ol>
+                <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} onClick={() => step >= 3 && setStep(3)}>3</ol>
                 <div className={`line s34`}><li><p className={`${step >= 4 ? 'onStepLine' : ''}`}></p></li></div>
-                <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} onClick={() => setStep(4)}>4</ol>
+                <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} onClick={() => step >= 4 && setStep(4)}>4</ol>
                 <div className={`line s35`}><li><p className={`${step === 5 ? 'onStepLine' : ''}`}></p></li></div>
                 <ol className={`step5 ${step === 5 ? 'onStep' : ''}`}><i className='fas fa-check'></i></ol>
             </div>
@@ -463,7 +477,7 @@ export default function FormAdd() {
                                             <option value="">School level</option>
                                             {optEducbg}
                                         </select>
-                                    {errors.level && <p className="error">{errors.level}</p>}
+                                        {errors.level && <p className="error">{errors.level}</p>}
 
                                     </div>
                                     <div>
@@ -471,30 +485,30 @@ export default function FormAdd() {
                                         <input type="text" id='ns' className={errors.nameOfSchool ? 'errorInput' : ''}
                                             value={educbgForm.nameOfSchool}
                                             onChange={(e) => setEducBgForm({ ...educbgForm, nameOfSchool: e.target.value })} placeholder='Name of School' />
-                                    {errors.nameOfSchool && <p className="error">{errors.nameOfSchool}</p>}
+                                        {errors.nameOfSchool && <p className="error">{errors.nameOfSchool}</p>}
 
                                     </div>
                                     <div>
                                         <label htmlFor="poa">Period of Attendance</label>
-                                        <input type="date" id='poa' placeholder='Period of Attendance' className={errors.periodOfAttendance ? 'errorInput' : ''}
-                                            value={educbgForm.periodOfAttendance}
-                                            onChange={(e) => setEducBgForm({ ...educbgForm, periodOfAttendance: e.target.value })}
+                                        <input type="date" id='poa' placeholder='Period of Attendance' className={errors.pod ? 'errorInput' : ''}
+                                            value={educbgForm.pod}
+                                            onChange={(e) => setEducBgForm({ ...educbgForm, pod: e.target.value })}
                                         />
-                                    {errors.periodOfAttendance && <p className="error">{errors.periodOfAttendance}</p>}
+                                        {errors.pod && <p className="error">{errors.pod}</p>}
 
                                     </div>
                                     <div>
-                                        <label htmlFor="yg">Yeak Graduate</label>
+                                        <label htmlFor="yg">Year Graduate</label>
                                         <input type="number" id='yg' placeholder='Yeak Graduate' className={errors.yearGraduate ? 'errorInput' : ''}
                                             value={educbgForm.yearGraduate}
                                             onChange={(e) => setEducBgForm({ ...educbgForm, yearGraduate: e.target.value })}
                                         />
-                                    {errors.yearGraduate && <p className="error">{errors.yearGraduate}</p>}
+                                        {errors.yearGraduate && <p className="error">{errors.yearGraduate}</p>}
 
                                     </div>
                                 </div>
                                 <div className="addCivic">
-                                    
+
                                     {addeducbgButton}
                                 </div>
                                 <div className="educbgCont">
@@ -513,7 +527,7 @@ export default function FormAdd() {
                                     <ol>
                                         <li>Period of Attendance</li>
                                         {educBg.map((entry, index) => (
-                                            <li key={`period-${index}`}>{entry.periodOfAttendance}</li>
+                                            <li key={`period-${index}`}>{entry.pod}</li>
                                         ))}
                                     </ol>
                                     <ol>
@@ -524,12 +538,14 @@ export default function FormAdd() {
                                     </ol>
                                 </div>
                                 <div className="clean">
-                                    <button onClick={()=>setEducBg([])} className={`clr ${educBg.length === 0 && 'clrG'}`}>Clear</button>
+                                    <button onClick={() => setEducBg([])} className={`clr ${educBg.length === 0 && 'clrG'}`}>Clear</button>
                                 </div>
 
                             </section>
                         </div>
                     </div>
+
+
                     <div className={` ${step === 4 ? "showContent" : ""} `}>
                         <div className="frtCont">
                             <section>
@@ -537,61 +553,215 @@ export default function FormAdd() {
 
                                     <div>
                                         <label htmlFor="org">Organization</label>
-                                        <input type="text" id='org' placeholder='Organization' />
+                                        <input type="text" id='org' placeholder='Organization' className={errors.organization ? 'errorInput' : ''}
+                                            value={civicForm.organization}
+                                            onChange={(e) => setCivicForm({ ...civicForm, organization: e.target.value })} />
+                                        {errors.organization && <p className="error">{errors.organization}</p>}
+
                                     </div>
                                     <div>
                                         <label htmlFor="adrs">Address</label>
-                                        <input type="text" id='adrs' placeholder='Address' />
+                                        <input type="text" id='adrs' placeholder='Address' className={errors.address ? 'errorInput' : ''}
+                                            value={civicForm.address}
+                                            onChange={(e) => setCivicForm({ ...civicForm, address: e.target.value })} />
+                                        {errors.address && <p className="error">{errors.address}</p>}
+
                                     </div>
                                     <div className="daterange">
                                         <div>
                                             <label htmlFor="st">Start</label>
-                                            <input type="date" id='st' placeholder='Start' />
+                                            <input type="date" id='st' placeholder='Start' className={errors.start ? 'errorInput' : ''}
+                                                value={civicForm.start}
+                                                onChange={(e) => setCivicForm({ ...civicForm, start: e.target.value })} />
+                                            {errors.start && <p className="error">{errors.start}</p>}
                                         </div>
                                         <div>
                                             <label htmlFor="end">End</label>
-                                            <input type="date" id='end' placeholder='End' />
+                                            <input type="date" id='end' placeholder='End' className={errors.end ? 'errorInput' : ''}
+                                                value={civicForm.end}
+                                                onChange={(e) => setCivicForm({ ...civicForm, end: e.target.value })} />
+                                            {errors.end && <p className="error">{errors.end}</p>}
                                         </div>
                                     </div>
                                     <div>
                                         <label htmlFor="ygorg">Year Graduated</label>
-                                        <input type="text" id='ygorg' placeholder='Year Graduated' />
+                                        <input type="text" id='ygorg' placeholder='Year Graduated' className={errors.yearGraduated ? 'errorInput' : ''}
+                                            value={civicForm.yearGraduated}
+                                            onChange={(e) => setCivicForm({ ...civicForm, yearGraduated: e.target.value })} />
+                                        {errors.yearGraduated && <p className="error">{errors.yearGraduated}</p>}
                                     </div>
                                 </div>
                                 <div className="addCivic">
-                                    <button>Add</button>
+                                    <button onClick={() => addCivic()}>{isAdd}</button>
                                 </div>
                                 <div className="civicCont">
                                     <ol>
-                                        <li>School Level</li>
-                                        <li>Elementary</li>
-                                        <li>High School</li>
-                                        <li>College</li>
+                                        <li>Organization</li>
+                                        {civic.map((entry, index) => (
+                                            <li key={index}>{entry.organization}</li>
+                                        ))}
                                     </ol>
                                     <ol>
-                                        <li>Name of School</li>
-                                        <li>Magsaysay</li>
-                                        <li></li>
-                                        <li></li>
+                                        <li>Address</li>
+                                        {civic.map((entry, index) => (
+                                            <li key={index}>{entry.address}</li>
+                                        ))}
                                     </ol>
                                     <ol>
-                                        <li>Period of Attendance</li>
-                                        <li></li>
-                                        <li></li>
-                                        <li></li>
+                                        <li>Start</li>
+                                        {civic.map((entry, index) => (
+                                            <li key={index}>{entry.start}</li>
+                                        ))}
                                     </ol>
                                     <ol>
-                                        <li>Year Graduate</li>
-                                        <li>2014</li>
-                                        <li></li>
-                                        <li></li>
+                                        <li>End</li>
+                                        {civic.map((entry, index) => (
+                                            <li key={index}>{entry.end}</li>
+                                        ))}
                                     </ol>
+                                    <ol>
+                                        <li>Year Graduated</li>
+                                        {civic.map((entry, index) => (
+                                            <li key={index}>{entry.yearGraduated}</li>
+                                        ))}
+                                    </ol>
+                                </div>
+                                <div className="clean2">
+                                    <button onClick={() => setCivic([])} className={`clr2 ${civic.length === 0 && 'clrG2'}`}>Clear all</button>
                                 </div>
                             </section>
                         </div>
                     </div>
                     <div className={` ${step === 5 ? "showContent" : ""} `}>
-                        <h1>Confirm this data</h1>
+                        <div className="laststep">
+
+                            <div className="fin">
+                                <h3>Basic info.</h3>
+                                <ol>
+                                    <li>
+                                        <p>Name (f,m,l): {`${formDataS1.firstname} ${formDataS1.middlename} ${formDataS1.lastname}}`}</p>
+                                    </li>
+                                    <li>
+                                        <p>Age: {formDataS1.age}</p>
+                                    </li>
+                                    <li>
+                                        <p>Sex: {formDataS1.sex}</p>
+                                    </li>
+                                    <li>
+                                        <p>Address: {formDataS1.address}</p>
+                                    </li>
+                                    <li>
+                                        <p>Gender: {formDataS1.gender}</p>
+                                    </li>
+                                </ol>
+                            </div>
+                            <div className="fin">
+                                <h3>Member info.</h3>
+                                <ol>
+                                    <li>
+                                        <p>Youth type: (F,M,L): {formDataS2.youthType}</p>
+                                    </li>
+                                    <li>
+                                        <p>Skills: [{formDataS2.skills?.map((skill, index) => (
+                                            <span key={index}>
+                                                {skill}{index < formDataS2.skills.length - 1 ? ', ' : ''}
+                                            </span>
+                                        ))}]</p>
+                                    </li>
+                                    <li>
+                                        <p>Date of Birth: {formDataS2.dateOfBirth}</p>
+                                    </li>
+                                    <li>
+                                        <p>Place of Birth: {formDataS2.placeOfBirth}</p>
+                                    </li>
+                                    <li>
+                                        <p>Height: {formDataS2.height}</p>
+                                    </li>
+                                    <li>
+                                        <p>Weight: {formDataS2.weight}</p>
+                                    </li>
+                                    <li>
+                                        <p>Civil Status: {formDataS2.civilStatus}</p>
+                                    </li>
+                                    <li>
+                                        <p>Religion: {formDataS2.religion}</p>
+                                    </li>
+                                    <li>
+                                        <p>Occupation: {formDataS2.occupation}</p>
+                                    </li>
+                                    <li>
+                                        <p>No. of Children: {formDataS2.noOfChildren}</p>
+                                    </li>
+                                </ol>
+                            </div>
+                            <div className="fin expand">
+                                <h3>Educational Background </h3>
+                                <div className="educbgCont">
+                                    <ol>
+                                        <li>School Level</li>
+                                        {educBg.map((entry, index) => (
+                                            <p key={`level-${index}`}>{entry.level}</p>
+                                        ))}
+                                    </ol>
+                                    <ol>
+                                        <li>Name of School</li>
+                                        {educBg.map((entry, index) => (
+                                            <p key={`school-${index}`}>{entry.nameOfSchool}</p>
+                                        ))}
+                                    </ol>
+                                    <ol>
+                                        <li>Period of Attendance</li>
+                                        {educBg.map((entry, index) => (
+                                            <p key={`period-${index}`}>{entry.pod}</p>
+                                        ))}
+                                    </ol>
+                                    <ol>
+                                        <li>Year Graduate</li>
+                                        {educBg.map((entry, index) => (
+                                            <p key={`grad-${index}`}>{entry.yearGraduate}</p>
+                                        ))}
+                                    </ol>
+                                </div>
+
+                            </div>
+                            <div className="fin expand">
+                                <h3>Civic Involvement </h3>
+                                <div className="civicCont">
+                                    <ol>
+                                        <li>Organization</li>
+                                        {civic.map((entry, index) => (
+                                            <p key={index}>{entry.organization}</p>
+                                        ))}
+                                    </ol>
+                                    <ol>
+                                        <li>Address</li>
+                                        {civic.map((entry, index) => (
+                                            <p key={index}>{entry.address}</p>
+                                        ))}
+                                    </ol>
+                                    <ol>
+                                        <li>Start</li>
+                                        {civic.map((entry, index) => (
+                                            <p key={index}>{entry.start}</p>
+                                        ))}
+                                    </ol>
+                                    <ol>
+                                        <li>End</li>
+                                        {civic.map((entry, index) => (
+                                            <p key={index}>{entry.end}</p>
+                                        ))}
+                                    </ol>
+                                    <ol>
+                                        <li>Year Graduated</li>
+                                        {civic.map((entry, index) => (
+                                            <p key={index}>{entry.yearGraduated}</p>
+                                        ))}
+                                    </ol>
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
 
                     <div className={`progress ${isLoading && 'progressOn'} `} >
