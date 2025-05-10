@@ -5,12 +5,18 @@
     border-radius: 0 0 1rem 1rem;
     color: white;
     display: grid;
-    grid-template-rows: 5rem auto;
+    grid-template-rows: 5rem minmax(0, 1fr);
     transition: .3s;
     overflow-y: hidden;
+    z-index: 1;
 }
 
-
+.youthBody {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    transition: .3s;
+    position: relative;
+}
 
 .tabButton {
     /* position: absolute; */
@@ -39,6 +45,10 @@
     background-color: rgba(8, 131, 184, 0.735);
     color: white;
 
+}
+
+.unsetAction i {
+    display: none;
 }
 
 .default {
@@ -97,6 +107,17 @@
 
 .ysklogo {
     height: 8rem;
+    animation-name: logoIn;
+    animation-duration: .3s;
+    animation-iteration-count: 1;
+}
+
+@keyframes logoIn {
+    0% {
+        filter: saturate(1000);
+        opacity: 0;
+        transform: translateX(2rem) rotate(18deg);
+    }
 }
 
 .searchYouth li {
@@ -175,15 +196,65 @@
 }
 
 .action {
-    padding-top: 3rem;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    place-items: center;
+    /* padding-top: 3rem; */
+}
+
+.action ol>* {
+    animation-iteration-count: 1;
+    animation-duration: .6s;
 }
 
 .action ol {
     display: flex;
     justify-content: center;
     gap: 3rem;
+
 }
 
+.action ol>*:nth-child(1) {
+    animation-name: inAction1;
+
+}
+
+.action ol>*:nth-child(2) {
+    animation-name: inAction2;
+
+
+}
+
+.action ol>*:nth-child(3) {
+        animation-name: inAction3;
+        /* transform: translate(-2.3rem, 8rem); */
+}
+
+@keyframes inAction1 {
+    0% {
+        transform: translate(2.3rem, 8rem);
+    }
+    40% {
+        transform: translate(-2.5rem, 4rem);
+
+    }
+}
+
+@keyframes inAction2 {
+    0% {
+        transform: translateY(8rem);
+    }
+}
+@keyframes inAction3 {
+    0% {
+        transform: translate(2.3rem, 8rem);
+    }
+    40% {
+        transform: translate(2.5rem, 4rem);
+
+    }
+}
 .action li {
     list-style: none;
     padding: 1rem;
@@ -199,7 +270,6 @@
 }
 
 .action .del {
-    transform: translateY(-4rem);
     background-color: rgba(122, 22, 22, 0.441);
 }
 
@@ -207,6 +277,11 @@
 .action .view {
     background-color: rgb(22, 122, 117);
     z-index: 1;
+}
+
+.selectedAction,
+.action li:hover {
+    transform: translateY(-1rem);
 }
 
 .action li::before {
@@ -248,6 +323,10 @@
     border-radius: 50%;
 }
 
+.action .selectedAction::before {
+    height: 6rem;
+    width: 6rem;
+}
 
 .action li:hover::before {
     height: 6rem;
@@ -359,6 +438,7 @@
 .step4::before {
     content: 'Civic Involvement';
 }
+
 .step5::before {
     content: 'Finish-up';
 }
@@ -391,26 +471,33 @@ select:focus,
     height: 100%;
 }
 
-.daterange > *,
-.HeaderC > *,
+.daterange>*,
+.HeaderC>*,
 .ssSec>*,
 .formBodyInner>*>*>*>* {
     display: grid;
     align-items: center;
     justify-content: center;
     width: fit-content;
+    gap: .2rem;
 }
+
 .daterange {
     gap: 1rem;
 }
-.daterange input{
+
+.daterange input {
     width: 8.5rem;
 }
-.formBodyInner>*>* {
+
+.showContent>* {
     gap: 1rem;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    padding-bottom: 4rem;
 }
 
 .formBodyInner>* {
@@ -437,7 +524,8 @@ select:focus,
 
 .add {
     display: grid;
-    grid-template-rows: 10rem auto;
+    grid-template-rows: 10rem minmax(0, 1fr);
+    padding-bottom: 8rem;
 }
 
 .actionStepper {
@@ -449,13 +537,14 @@ select:focus,
     bottom: 0;
     left: 50%;
     width: 100%;
-    
+
 }
 
-.actionStepper button i{
+.actionStepper button i {
     font-size: .9rem;
     color: white;
 }
+
 .actionStepper button {
     width: 6rem;
     padding: .5rem 1.5rem;
@@ -491,23 +580,59 @@ select:focus,
     display: block;
 }
 
-.youthHeadOpen {
-    height: 95vh;
+.youthHeadOpen .youthHead {
+    height: 100%;
+    min-height: 23rem;
+    max-height: 54rem;
 
+}
+
+.ybodyHeader {
+    display: grid;
+    gap: .8rem;
+}
+
+.ybodyHeader .resultSearchCount {
+    font-size: .8rem;
+    color: rgb(0, 0, 0);
+}
+
+.ybodyHeader .resultSearchCount span {
+    font-style: italic;
+    font-weight: 700;
+}
+
+.ybodyHeader {
+    padding: 0 3rem;
+    margin-top: 3rem;
+
+}
+
+.ybodyHeader .hres {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ybodyHeader .hres p:hover {
+    cursor: pointer;
+}
+
+.ybodyHeader .hres p:hover i {
+    transform: translateX(-.5rem);
+    transition: .3s;
+}
+
+.ybodyHeader .hres li {
+    font-size: .8rem;
 }
 
 .formBodyInner,
 .formBodyInner>*,
 .formBody .wform {
     height: 100%;
-    max-height: 50vh;
 }
 
-.formBodyInner>*>* {
-    overflow-y: scroll;
-    scrollbar-width: none;
-    padding-bottom: 4rem;
-}
+
 
 .ssSec {
     display: flex;
@@ -571,13 +696,16 @@ input[type=number]::-webkit-outer-spin-button {
 .skillsList li {
     font-size: .8rem;
 }
+
 .skillsList li {
     list-style: none;
 }
-.skillsList i:hover{
+
+.skillsList i:hover {
     cursor: pointer;
     color: rgb(148, 23, 23);
 }
+
 .sCont {
     display: flex;
     justify-content: center;
@@ -617,10 +745,11 @@ input[type=number]::-webkit-outer-spin-button {
     position: relative;
 }
 
-.skl i:hover{
+.skl i:hover {
     color: #b7b7b7;
     cursor: pointer;
 }
+
 .skl i {
     display: block;
     border-left: solid 1px white;
@@ -644,40 +773,47 @@ input[type=number]::-webkit-outer-spin-button {
     top: .6rem;
 }
 
+.educbgCont {
+    grid-template-columns: 9rem 12rem 9rem 7rem;
+}
+
+.civicCont {
+    grid-template-columns: 9rem 12rem 6rem 6rem 7.5rem;
+}
 
 .civicCont,
 .educbgCont {
+    display: grid;
     padding: 0 10% 0 10%;
     width: 100%;
-    display: flex;
     justify-content: center;
     align-items: start;
     margin-top: 2rem;
     gap: 1rem;
 }
+
 .civicCont ol,
-.educbgCont ol{
+.educbgCont ol {
     display: grid;
     gap: 1rem;
 }
 
-.civicCont ol:nth-child(2),
-.educbgCont ol:nth-child(2){
-    width: 25%;
-}
 .civicCont ol li,
-.educbgCont ol li{
+.educbgCont ol li {
     font-size: .7rem;
 }
+
 .civicCont ol li:nth-child(1),
-.educbgCont ol li:nth-child(1){
+.educbgCont ol li:nth-child(1) {
     font-size: .75rem;
     font-weight: 600;
 }
+
 .civicCont li,
-.educbgCont li{
+.educbgCont li {
     list-style: none;
 }
+
 .frtCont,
 .tCont {
     margin-top: 2rem;
@@ -688,24 +824,28 @@ input[type=number]::-webkit-outer-spin-button {
     justify-content: start;
     flex-wrap: wrap;
 }
-.HeaderC{
+
+.HeaderC {
     display: flex;
     justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
     align-items: start;
 }
+
 #poa,
-#yg{
+#yg {
     width: 10rem;
 }
+
 .addCivic,
-.addEducBg{
+.addEducBg {
     margin-top: 3rem;
     width: 100%;
 }
+
 .addCivic button,
-.addEducBg button{
+.addEducBg button {
     padding: .6rem 3rem;
     border-radius: 1rem;
     color: white;
@@ -715,52 +855,60 @@ input[type=number]::-webkit-outer-spin-button {
     transition: .3s;
 
 }
+
 .addCivic button,
-.addCivic button{
+.addCivic button {
     width: 8rem;
 }
 
 
 .addCivic button:hover,
-.addEducBg button:hover{
+.addEducBg button:hover {
     cursor: pointer;
     background-color: rgba(22, 79, 122, 0.384);
 
 }
-.addCivic button i{
+
+.addCivic button i {
     font-size: .8rem;
 }
-body .op{
+
+body .op {
     opacity: 50%;
     cursor: default;
     background-color: #424242 !important;
 }
 
-.errorInput{
+.errorInput {
     outline-color: #b72525 !important;
 }
-.error{
+
+.error {
     color: #b72525;
     font-size: .8rem;
     margin-top: .2rem;
 }
-.progressOn{
+
+.progressOn {
     display: block;
 }
-.progress p{
+
+.progress p {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: .2rem;
 }
+
 .clean2,
-.clean{
+.clean {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 2rem;
 }
-.clean2 button ,
+
+.clean2 button,
 .clean button {
     background-color: #424242;
     color: white;
@@ -770,53 +918,380 @@ body .op{
     outline: solid 1px rgba(255, 255, 255, 0.448);
     cursor: pointer;
 }
+
 .clean2 button:hover,
-.clean button:hover{
+.clean button:hover {
     background-color: #42424271;
 
 }
 
 .clrG2,
-.clrG{
+.clrG {
     display: none;
 }
-.fin{
+
+.fin {
     width: 60%;
     display: grid;
     align-items: start;
 }
-.laststep > *{
-    padding-bottom: 2rem ;
+
+.laststep>* {
+    padding-bottom: 2rem;
 }
-.laststep h3{
+
+.laststep h3 {
     margin-bottom: .2rem;
 }
-.laststep li{
+
+.laststep li {
     padding-left: 1rem;
     list-style: none;
 }
-.laststep{
+
+.laststep {
     margin-top: 2rem;
     display: flex !important;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
-.laststep p{
+
+.laststep p {
     font-size: .8rem;
     color: rgba(255, 255, 255, 0.512);
 }
-.expand{
+
+.expand {
     display: grid;
     place-items: center;
     width: 100% !important;
 }
-.expand ol{
+
+.expand ol {
     width: 100%;
 }
-.expand ol li:nth-child(1){
+
+.expand ol li:nth-child(1) {
     text-wrap: nowrap;
 }
-.expand ol p{
+
+.expand ol p {
     padding-left: 1rem;
+}
+
+.ybodyHeader {
+    flex-shrink: 0;
+}
+
+.youthList {
+    padding-bottom: 6rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    gap: .8rem;
+    margin-top: 1rem;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.youthBody ol {
+    display: flex;
+    background-color: white;
+    padding: 1rem;
+    border: solid 1px rgba(0, 0, 0, 0.631);
+    border-radius: .8rem;
+    position: relative;
+    max-width: 60%;
+    min-width: fit-content;
+    width: 100%;
+    justify-content: center;
+
+}
+
+.youthBody ol section>*:nth-child(3) p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: nowrap;
+}
+
+.youthBody ol section {
+    grid-template-columns: min-content 1rem 10rem 2rem 2rem 4.5rem 4.5rem 11rem;
+    display: grid;
+    align-items: center;
+    gap: 1rem;
+}
+
+.youthBody li {
+    font-size: .7rem;
+    list-style: none;
+}
+
+.youthBody li>*:nth-child(1) {
+    font-weight: 600;
+    margin-bottom: .2rem;
+}
+
+.prk {
+    width: 8rem;
+}
+
+.skills_list {
+    overflow: hidden;
+    width: 13rem;
+    height: 100%;
+    color: white;
+    background-color: #132127;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    border-radius: 1rem .8rem .8rem 4rem;
+    padding-left: 1.5rem;
+    padding-top: .6rem;
+    align-items: start;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.skills_list h4 {
+    color: rgb(255, 177, 32);
+}
+
+.skills_list p {
+    font-size: .8rem;
+    color: rgb(183, 183, 183);
+}
+
+
+
+.youthList ol {
+    transition: .2s;
+}
+
+.youthList section div i:hover {
+    transform: scale(1.1);
+    transition: .3s;
+}
+
+.youthList section div .fa-pen {
+    color: rgb(0 79 139);
+}
+
+.youthList section div .fa-trash {
+    color: red;
+}
+
+.youthList section div .fa-info {
+    color: rgb(0 159 151);
+}
+
+.akika {
+    color: white;
+}
+
+
+#youths {
+    display: grid;
+    grid-template-rows: 23rem minmax(0, 1fr) 1rem;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.youthHeadOpen {
+    grid-template-rows: auto minmax(0, 1fr) 1rem !important;
+
+}
+
+.youthList section div i {
+    width: 2rem;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    display: none;
+    animation-name: itag;
+    animation-iteration-count: 1;
+    animation-duration: .3s;
+}
+
+@keyframes itag {
+    0% {
+        opacity: 0;
+    }
+}
+
+#youths .modAction .fa-pen,
+#youths .delAction .fa-trash,
+#youths .viewAction .fa-info {
+    display: block;
+}
+
+.resSubmit {
+    padding-bottom: 2rem;
+    height: 100%;
+}
+
+.resSubmit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.resSubmit .fa-thumbs-up {
+    font-size: 1.5rem;
+    color: rgb(12, 185, 12);
+    animation-name: tsuc;
+    animation-iteration-count: 1;
+    animation-duration: .5s;
+}
+
+@keyframes tsuc {
+    0% {
+        transform: rotate(-45deg);
+    }
+}
+
+.resSubmit .linksg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .4rem;
+    transform: translateY(2rem);
+}
+
+.resSubmit button {
+    position: relative;
+    width: 6rem;
+    padding: .6rem 0;
+    font-size: .7rem;
+    border: none;
+    outline: solid 1px rgba(255, 255, 255, 0.401);
+    border-radius: .4rem;
+    cursor: pointer;
+    color: white;
+    transition: .3s;
+    animation-duration: .4s;
+    animation-iteration-count: 1;
+}
+
+.resSubmit button:nth-child(1) {
+    animation-name: reslastL;
+}
+
+.resSubmit button:nth-child(2) {
+    animation-name: reslastR;
+}
+
+@keyframes reslastL {
+    0% {
+        opacity: 0;
+        transform: translateX(-2rem);
+    }
+}
+
+@keyframes reslastR {
+    0% {
+        opacity: 0;
+        transform: translateX(2rem);
+    }
+}
+
+.resSubmit p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    position: relative;
+    animation-name: resmsg;
+    animation-duration: .4s;
+    animation-iteration-count: 1;
+}
+
+@keyframes resmsg {
+    0% {
+        opacity: 0;
+    }
+}
+
+.resSubmit .spt {
+    width: 1.5rem;
+    height: 1.5rem;
+    position: relative;
+    background-color: #dc2c2c;
+    border-radius: 50%;
+}
+
+.failed::after {
+    content: "Something went wrong.";
+    position: absolute;
+    font-size: .75rem;
+    bottom: -1.5rem;
+}
+
+.resSubmit .fa-plus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    color: rgb(255, 255, 255);
+}
+
+.resSubmit .findY {
+    background-color: #132127;
+}
+
+.resSubmit .findY:hover {
+    background-color: #163a4b;
+}
+
+.resSubmit .adgain:hover {
+    background-color: #132127;
+}
+
+.resSubmit .adgain {
+    background-color: #163a4b;
+}
+.noSeacrch{
+    visibility: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width:1048px) {
+    .youthBody .prk {
+        display: none;
+    }
+}
+
+@media screen and (max-width:981px) {
+
+    .youthBody ol section {
+        grid-template-columns: min-content 1rem 10rem 2rem 2rem 4.5rem 4.5rem;
+    }
+
+    .prk {
+        display: none;
+    }
+
+    .youthBody .skills_list {
+        bottom: -3rem;
+        height: 3.7rem;
+    }
+
+    .youthList {
+        gap: 3.7rem;
+    }
 }

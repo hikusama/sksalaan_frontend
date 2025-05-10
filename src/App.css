@@ -130,7 +130,7 @@ main {
   height: 2rem;
   width: 23rem;
   background-color: rgba(3, 184, 255, 0.108);
-  border:solid 1px rgba(3, 184, 255, 0.476);
+  border:solid 1px rgba(3, 184, 255, 0.476) ;
   left: -6rem;
   transform: rotate(-45deg);
 }
@@ -156,6 +156,8 @@ main {
   transform: translate(-50%,-50%);
 }
 
+
+
 /* main{
   grid-template-columns: 5rem auto;
 }
@@ -166,3 +168,18 @@ main {
 .lilside{
   display: none;
 } */
+
+
+
+@media screen and (max-width:755px) {
+main{
+  grid-template-columns: 5rem auto;
+}
+
+.links_cont li{
+  width: unset;
+}
+.lilside{
+  display: none;
+}
+}
