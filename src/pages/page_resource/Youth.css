@@ -10,7 +10,9 @@
     overflow-y: hidden;
     z-index: 1;
 }
-
+/* body #side #youthLink{
+    color: orange;               
+} */
 .youthBody {
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
@@ -227,14 +229,15 @@
 }
 
 .action ol>*:nth-child(3) {
-        animation-name: inAction3;
-        /* transform: translate(-2.3rem, 8rem); */
+    animation-name: inAction3;
+    /* transform: translate(-2.3rem, 8rem); */
 }
 
 @keyframes inAction1 {
     0% {
         transform: translate(2.3rem, 8rem);
     }
+
     40% {
         transform: translate(-2.5rem, 4rem);
 
@@ -246,15 +249,18 @@
         transform: translateY(8rem);
     }
 }
+
 @keyframes inAction3 {
     0% {
         transform: translate(2.3rem, 8rem);
     }
+
     40% {
         transform: translate(2.5rem, 4rem);
 
     }
 }
+
 .action li {
     list-style: none;
     padding: 1rem;
@@ -590,6 +596,43 @@ select:focus,
 .ybodyHeader {
     display: grid;
     gap: .8rem;
+    position: relative;
+
+}
+
+.responseAction {
+    display: flex;
+    color: white;
+    background-color: #132127;
+    padding: .6rem 1rem;
+    border-radius: .6rem;
+    border: solid 1px rgba(0, 0, 0, 0.501);
+    right: 2rem;
+    gap: .4rem;
+    position: absolute;
+    align-items: center;
+    font-size: .8rem;
+    animation: res .3s ease-out 0s 1;
+    top: 0;
+}
+
+@keyframes res {
+    0% {
+        opacity: 0%;
+        top: 40%;
+    }
+}
+
+.responseAction i {
+    font-size: .6rem;
+    height: 1.2rem;
+    width: 1.2rem;
+    background-color: green;
+    color: white;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+
 }
 
 .ybodyHeader .resultSearchCount {
@@ -611,13 +654,14 @@ select:focus,
 .ybodyHeader .hres {
     display: flex;
     justify-content: space-between;
+    position: relative;
 }
 
-.ybodyHeader .hres p:hover {
+.ybodyHeader .hres .surt:hover {
     cursor: pointer;
 }
 
-.ybodyHeader .hres p:hover i {
+.ybodyHeader .hres .surt:hover i {
     transform: translateX(-.5rem);
     transition: .3s;
 }
@@ -1254,17 +1298,79 @@ body .op {
 .resSubmit .adgain {
     background-color: #163a4b;
 }
-.noSeacrch{
+
+.noSeacrch {
     visibility: hidden;
 }
 
+.nxtPage button {
+    height: 3rem;
+    width: 8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
 
+.nxtPage button:hover {
+    animation: loadMore .6s ease-in-out 0s infinite;
+}
 
+.nxtPage button:hover .fa-arrow-left {
+    animation: leftLoad .6s ease-in-out 0s infinite;
+}
 
+.nxtPage button:hover .fa-arrow-right {
+    animation: righttLoad .6s ease-in-out 0s infinite;
+}
 
+.nxtPage {
+    font-size: .8rem;
+}
 
+@keyframes loadMore {
+    0% {
+        opacity: 50%;
+    }
+}
 
+@keyframes leftLoad {
+    0% {
+        transform: translateX(-2rem);
+    }
+}
 
+@keyframes righttLoad {
+    0% {
+        transform: translateX(2rem);
+    }
+}
+
+.sfor {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .8rem;
+}
+
+.isloadOp {
+    filter: blur(450);
+    opacity: 50%;
+}
+
+.sortBy {
+    color: blue;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0;
+    width: fit-content !important;
+    height: fit-content;
+    background: none;
+    color: black;
+    outline: none !important;
+    padding: 10px;
+}
 
 
 

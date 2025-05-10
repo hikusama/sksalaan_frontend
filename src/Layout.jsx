@@ -1,8 +1,15 @@
 import { Link, Outlet } from "react-router-dom";
 import logo from './assets/logo.png';
 import user from './assets/user.jpg';
-
+ 
 export default function Layout() {
+
+
+
+
+
+
+
     return <>
         <header>
             {/*  */}
@@ -24,21 +31,21 @@ export default function Layout() {
 
                         <div className="links_cont headside">
 
-                            <Link to={'/'} title="Overview">
+                            <Link to={'/'} id='overV' title="Overview">
                                 <li>
                                     <i className="fas fa-tachometer-alt"></i>
                                     <p className="lilside">Overview</p>
                                 </li>
                             </Link>
 
-                            <Link to={'/youths'} title="Youths">
+                            <Link to={'/youths'}  id='youthLink' title="Youths">
                                 <li>
                                     <i className="fas fa-users"></i>
                                     <p className="lilside">Youths</p>
                                 </li>
                             </Link>
 
-                            <Link to={'/accounts'} title="Accounts">
+                            <Link to={'/accounts'}  id='accV'  title="Accounts">
                                 <li>
 
                                     <i className="fas fa-user-circle"></i>
@@ -46,14 +53,14 @@ export default function Layout() {
                                 </li>
                             </Link>
 
-                            <Link to={'/post'} title="Post">
+                            <Link to={'/post'}  id='postV'  title="Post">
                                 <li>
                                     <i className="fas fa-paper-plane"></i>
                                     <p className="lilside">Post</p>
                                 </li>
                             </Link>
 
-                            <Link to={'/notification'} title="Notification">
+                            <Link to={'/notification'}  id='notifV'  title="Notification">
                                 <li>
 
                                     <i className="fas fa-bell"></i>
@@ -64,7 +71,7 @@ export default function Layout() {
                         </div>
                         <div className="links_cont footside">
 
-                            <Link to={'/settings'} title="Settings">
+                            <Link to={'/settings'}  id='settingsV'  title="Settings">
                                 <li>
                                     <i className="fas fa-cogs"></i>
                                     <p className="lilside">Settings</p>

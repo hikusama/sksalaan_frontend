@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import logo from '../assets/logo.png';
 import FormAdd from './youth/youthAdd';
+import { motion } from 'framer-motion';
 
 
 export default function Youths() {
@@ -10,27 +11,63 @@ export default function Youths() {
         total_pages: 0,
         current_page: 0,
     });
+    const [sortBy, setSortBy] = useState('fname');
+    const [isSearchBegin, setBeginSearch] = useState(false);
+    const [isSearchOn, setSearchOn] = useState(false);
+    const [ischangeDb, setVhangeDb] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
+    const [nxtPage, setNxtPage] = useState(<button onClick={() => search(pagination.current_page + 1)}><i className="fas fa-arrow-left"></i> Load more <i className="fas fa-arrow-right"></i></button>);
     const [query, setQuery] = useState('');
+    const [typedQ, setTypeQ] = useState('');
     const [action, setTypeAction] = useState(null);
     const [actionState, setActionState] = useState(null);
     const [bgList, setBgList] = useState('white');
 
     const search = async (page = 1) => {
+        if (isLoading) {
+            return
+        }
+        setIsLoading(true)
+        setSearchOn(true)
+        setSearchOn(false)
+        if (query) {
+            setBeginSearch(true)
+        } else {
+            setBeginSearch(false)
+        }
 
         const response = await fetch('/api/search', {
             method: 'POST',
-            body: JSON.stringify({ q: query, perPage: 10, page: page }),
+            body: JSON.stringify({ q: query, page: page, sortBy: sortBy }),
         });
         const data = await response.json();
 
         if (response.ok) {
+            setBeginSearch(false)
+            setIsLoading(false)
+
             if (data.data) {
-                setData(data.data)
+                if (page > 1) {
+                    setData(prevData => [...prevData, ...data.data]);
+                } else {
+                    setData([])
+                    setData(data.data)
+                }
+                setPagination(data.pagination)
+
+            } else {
+                setPagination({
+                    total_items: 0,
+                    total_pages: 0,
+                    current_page: 0,
+                })
             }
-            setPagination(data.pagination)
         }
     }
+
+
+
 
 
     const handleActionState = (state) => {
@@ -93,8 +130,37 @@ export default function Youths() {
         </div>
 
 
-    const deleteUser = (id) => {
+    const deleteUser = async (id) => {
+
         // 
+        let conf = prompt("Type 'delete' to complete.")
+
+        if (conf?.trim().toLowerCase() === "delete") {
+            setVhangeDb(true)
+
+            const response = await fetch(`/api/youth/${id}`, {
+                method: 'delete',
+            });
+
+            if (response.ok) {
+                setTimeout(() => {
+                    setVhangeDb(false)
+                }, 3000);
+
+                const updated = data
+                    .map(group => ({
+                        ...group,
+                        youthUser: group.youthUser.filter(youth => youth.y_user.id !== id),
+                    }))
+                    .filter(group => group.youthUser.length > 0);
+
+                setData(updated);
+            }
+
+
+        } else {
+            setVhangeDb(false)
+        }
     }
     const modifyUser = (id) => {
         // 
@@ -130,9 +196,12 @@ export default function Youths() {
                             onChange={(e) => setQuery(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
+                                    setTypeQ(e.target.value)
+                                    setQuery(e.target.value)
                                     search();
                                 }
-                            }}
+                            }
+                            }
                             placeholder='Search here....' />
                     </li>
                 </ol>
@@ -153,16 +222,37 @@ export default function Youths() {
             </div>
     } else if (tabClick === 3) {
         //
-        typeTab = <FormAdd step={isAddOpen} setStep={setAddOpen} settab={setTabIsClicked} />
+        typeTab = <FormAdd step={isAddOpen} setStep={setAddOpen} search={search} settab={setTabIsClicked} />
 
 
     }
     let count = 1;
     useEffect(() => {
         search()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        search()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortBy]);
+
+    useEffect(() => {
+        if (!data.length || !data[0].youthUser) {
+            setNxtPage(<p>No records found.</p>);
+        } else if (pagination.total_pages === pagination.current_page) {
+            setNxtPage(<p><i className="fas fa-thumbs-up"></i> You're all caught up</p>);
+        } else {
+            setNxtPage(
+                <button onClick={() => search(pagination.current_page + 1)}>
+                    <i className="fas fa-arrow-left"></i> Load more <i className="fas fa-arrow-right"></i>
+                </button>
+            );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, pagination]);
     return <>
+
         <div id="youths" className={`  ${isAddOpen ? 'youthHeadOpen' : ''}`}>
             <div className={`youthHead`}>
                 <div className="tabButton">
@@ -181,68 +271,97 @@ export default function Youths() {
                 <div className="ybodyHeader">
                     <h2>Records </h2>
                     <p className='resultSearchCount'>
-                        {pagination.total_items} <strong>Results</strong> for <span>{query}:</span>
+                        {pagination.total_items} <strong>Results</strong> {typedQ != "" ? (<>for <span>{typedQ}:</span></>) : ""}
                     </p>
-                    <div className='hres'>
+                    <label className='hres' htmlFor='sortBySelect'>
 
                         <li>{`Page ${pagination.current_page} of ${pagination.total_pages}`}</li>
-                        <li>
-                            <p><i className="fas fa-list"></i> Filter by: name </p>
+                        <li className='surt'>
+                            <p><i className="fas fa-list"></i> Sort by:
+                                <select id='sortBySelect' className='sortBy' value={sortBy} onChange={(e) => {
+                                    setSortBy(e.target.value)
+
+                                }}>
+                                    <option value="fname">Given name</option>
+                                    <option value="lname">Family name</option>
+                                    <option value="age">Age</option>
+                                    <option value="created_at">Created</option>
+                                </select>
+                            </p>
                         </li>
-                    </div>
+                    </label>
+                    {ischangeDb ? (<>
+                        <div className={`responseAction`}>
+                            <ul><i className="fas fa-check"></i></ul>
+                            <ul>
+                                <p>Deleted Successfully</p>
+                            </ul>
+                        </div></>) : ''}
+
                 </div>
                 <div className="youthList">
+                    {isSearchBegin && typedQ.trim() != "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Searching.....</p> : ''}
 
-                    {data.map((item, idx) =>
-                        item.youthUser.map((youth) => (
-                            <ol key={`${idx}-${count}`}>
-                                <section>
-                                    <div className={actionState != null ? action : ''}>
-                                        <i className="fas fa-trash" onClick={() => deleteUser(youth.y_user.id)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                        <i className="fas fa-pen" onClick={() => modifyUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                        <i className="fas fa-info" onClick={() => viewUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                    </div>
-                                    <li>
-                                        <p>#</p>
-                                        <p>{count++}</p>
-                                    </li>
-                                    <li>
-                                        <p>Name</p>
-                                        <p>{`${youth.lname}, ${youth.fname} ${youth.mname?.charAt(0)}. `}</p>
-                                    </li>
-                                    <li>
-                                        <p>Type</p>
-                                        <p>{youth.youthType}</p>
-                                    </li>
-                                    <li>
-                                        <p>Age</p>
-                                        <p>{youth.age}</p>
-                                    </li>
-                                    <li>
-                                        <p>Contact</p>
-                                        <p>{youth.contactNo ?? "00"}</p>
-                                    </li>
-                                    <li>
-                                        <p>Created</p>
-                                        <p>{new Date(youth.created_at).toLocaleDateString('en-US', {
-                                            month: 'long',
-                                            day: 'numeric',
-                                            year: 'numeric'
-                                        })}</p>
-                                    </li>
-                                </section>
-                                <div className="prk"></div>
+                    {isSearchOn ? "" :
+                        (<>
+                            {data.map((item, idx) =>
+                                item.youthUser.map((youth) => (
+                                    <motion.ol key={`${idx}-${count}`}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{
+                                            delay: count * .2,
+                                            duration: .6,
+                                        }}
+                                        className={isLoading ? 'isloadOp' : ''}>
+                                        <section>
+                                            <div className={actionState != null ? action : ''}>
+                                                <i className="fas fa-trash" onClick={() => deleteUser(youth.y_user.id,)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
+                                                <i className="fas fa-pen" onClick={() => modifyUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
+                                                <i className="fas fa-info" onClick={() => viewUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
+                                            </div>
+                                            <li>
+                                                <p>#</p>
+                                                <p>{count++}</p>
+                                            </li>
+                                            <li>
+                                                <p>Name</p>
+                                                <p>{`${youth.lname}, ${youth.fname} ${youth.mname?.charAt(0)}. `}</p>
+                                            </li>
+                                            <li>
+                                                <p>Type</p>
+                                                <p>{youth.y_user.youthType}</p>
+                                            </li>
+                                            <li>
+                                                <p>Age</p>
+                                                <p>{youth.age}</p>
+                                            </li>
+                                            <li>
+                                                <p>Contact</p>
+                                                <p>{youth.contactNo ?? "00"}</p>
+                                            </li>
+                                            <li>
+                                                <p>Created</p>
+                                                <p>{new Date(youth.created_at).toLocaleDateString('en-US', {
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    year: 'numeric'
+                                                })}</p>
+                                            </li>
+                                        </section>
+                                        <div className="prk"></div>
 
-                                <div className="skills_list">
-                                    <h4>Skills</h4>
-                                    <p>{youth.y_user.skills}</p>
-                                </div>
-                            </ol>
-                        ))
-                    )
+                                        <div className="skills_list">
+                                            <h4>Skills</h4>
+                                            <p>{youth.y_user.skills}</p>
+                                        </div>
+                                    </motion.ol>
+                                ))
+                            )}
+                        </>)
                     }
-                    <ul>
-                        <button>Load more</button>
+                    <ul className={`nxtPage ${isLoading ? 'isloadOp' : ''}`}>
+                        {nxtPage}
                     </ul>
                     {/* <ol >
                         <section>

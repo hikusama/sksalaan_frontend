@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // { isAddOpen, setAddOpen }
-export default function FormAdd({ settab }) {
+export default function FormAdd({ settab,search }) {
     // const [isS1FormPass, setS1FormPass] = useState(false);
     // const [isS2FormPass, setS2FormPass] = useState(false);
     // const [isS3FormPass, setS3FormPass] = useState(false);
@@ -275,7 +275,7 @@ export default function FormAdd({ settab }) {
             <div className="resSubmit">
                 {submitRes}
                 <div className="linksg">
-                    <button className="findY" onClick={() => settab(1)}><i className="fas fa-search"></i> Find</button>
+                    <button className="findY" onClick={() => {settab(1); search()}}><i className="fas fa-search"></i> Find</button>
                     <button className="adgain" onClick={() => setSubmit(false)}><i className="fas fa-check-circle"></i> Done</button>
                 </div>
             </div>
@@ -390,9 +390,17 @@ export default function FormAdd({ settab }) {
                                                 onChange={(e) => {
                                                     setFormdataS1({ ...formDataS1, address: e.target.value })
                                                 }}>
+
                                                 <option value="">Address</option>
-                                                <option value="tiktapul">tiktapul</option>
-                                                <option value="deadsea">deadsea</option>
+                                                <option value="Zone 1">Zone 1</option>
+                                                <option value="Zone 2">Zone 2</option>
+                                                <option value="Zone 3">Zone 3</option>
+                                                <option value="Zone 4">Zone 4</option>
+                                                <option value="Sittio San Antonio">Sittio San Antonio</option>
+                                                <option value="Sittio Lugakit">Sittio San</option>
+                                                <option value="Sittio Hapa">Sittio San</option>
+                                                <option value="Sittio Balunu">Sittio San</option>
+                                                <option value="Sittio Carreon">Sittio San</option>
                                             </select>
                                             {errors.address && <p className="error">{errors.address[0]}</p>}
                                         </div>
