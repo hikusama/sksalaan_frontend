@@ -286,13 +286,13 @@ export default function FormAdd({ settab,search }) {
                 <div className="stepsHeader">
                     <h2><i className="fas fa-plus"></i> Register Youth</h2>
                     <div className="steps">
-                        <ol className="step1 onStep" onClick={() => setStep(1)}>1</ol>
+                        <ol className="step1 onStep" onClick={() => {step > 1 && setStep(1)}}>1</ol>
                         <div className={`line s1`}><li><p className={`${step >= 2 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} onClick={() => setStep(2)}>2</ol>
+                        <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} onClick={() => {step > 2 && setStep(2)}}>2</ol>
                         <div className={`line s2`}><li><p className={`${step >= 3 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} onClick={() => setStep(3)}>3</ol>
+                        <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} onClick={() => {step > 3 && setStep(3)}}>3</ol>
                         <div className={`line s34`}><li><p className={`${step >= 4 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} onClick={() => setStep(4)}>4</ol>
+                        <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} onClick={() => {step > 4 && setStep(4)}}>4</ol>
                         <div className={`line s35`}><li><p className={`${step === 5 ? 'onStepLine' : ''}`}></p></li></div>
                         <ol className={`step5 ${step === 5 ? 'onStep' : ''}`}><i className='fas fa-check'></i></ol>
                     </div>

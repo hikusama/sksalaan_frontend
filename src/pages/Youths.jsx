@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import logo from '../assets/logo.png';
 import FormAdd from './youth/youthAdd';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 
 
 export default function Youths() {
@@ -306,7 +306,7 @@ export default function Youths() {
                         (<>
                             {data.map((item, idx) =>
                                 item.youthUser.map((youth) => (
-                                    <motion.ol key={`${idx}-${count}`}
+                                    <Motion.ol key={`${idx}-${count}`}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{
@@ -355,7 +355,7 @@ export default function Youths() {
                                             <h4>Skills</h4>
                                             <p>{youth.y_user.skills}</p>
                                         </div>
-                                    </motion.ol>
+                                    </Motion.ol>
                                 ))
                             )}
                         </>)

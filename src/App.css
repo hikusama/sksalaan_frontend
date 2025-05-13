@@ -3,6 +3,16 @@
   padding: 0;
   box-sizing: border-box;
 }
+html{
+      scrollbar-width: none;
+}
+li {
+    list-style: none;
+}
+.contents {
+  height: 100vh;
+}
+
 /* #root{
   overflow-y: hidden;
 } */
@@ -18,8 +28,11 @@ body {
   border-right: solid 1px #126a7582;
 }
 
+#side .port,
 #side a {
   color: white;
+  position: relative;
+  z-index: 1;
 }
 
 main {
@@ -33,13 +46,16 @@ main {
   display: flex;
   justify-content: center;
 }
-.logo p{
+
+.logo p {
   color: rgb(3, 184, 255);
 
 }
-.headside{
+
+.headside {
   margin-top: 4rem;
 }
+
 .logo img {
   width: 4rem;
 }
@@ -69,15 +85,28 @@ main {
   margin-right: .3rem;
 }
 
+.links_cont #port ,
 .links_cont a {
+  color: white;
   width: 100%;
   display: grid;
   place-items: center;
+  cursor: pointer;
   text-decoration: none;
 }
-.links_cont a:hover li>*{
+.portalType .onLoc p,
+.portalType .onLoc i,
+.onLoc > *:nth-child(1){
+  color: orange !important;
+
+}
+
+.links_cont #port:hover ,
+#side .port:hover,
+.links_cont a:hover > *:nth-child(1) {
   color: orange;
 }
+
 .links_cont li {
   width: 5.5rem;
   height: 2rem;
@@ -98,62 +127,72 @@ main {
 
 .userpic {
   color: white;
-  
+
   display: flex;
   gap: .6rem;
   justify-content: center;
 }
 
-.footside{
+.footside {
   display: flex;
   flex-direction: column;
   margin-bottom: 4rem;
 }
-.footside a{
+
+.footside a {
   margin-bottom: 1rem;
 }
-.wraplink{
+
+.wraplink {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.name p{
+
+.name p {
   color: rgb(3, 184, 255);
 }
-.logo p{
+
+.logo p {
   font-size: .9rem;
 }
+
 .f,
-.s{
+.s {
   position: absolute;
   height: 2rem;
   width: 23rem;
   background-color: rgba(3, 184, 255, 0.108);
-  border:solid 1px rgba(3, 184, 255, 0.476) ;
+  border: solid 1px rgba(3, 184, 255, 0.476);
   left: -6rem;
   transform: rotate(-45deg);
 }
-.f{
+
+.f {
   top: 40%;
 }
-.s{
+
+.s {
   top: 50%;
 }
-#navlinks_cont{
+
+#navlinks_cont {
   overflow-x: hidden;
   position: relative;
 }
-#overview{
+
+#overview {
   height: 100%;
   position: relative;
 }
-#prev{
+
+#prev {
   height: 25rem;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
 
@@ -168,18 +207,54 @@ main {
 .lilside{
   display: none;
 } */
+.portalType{
+  padding-left: 2rem;
+}
+.portalType li i,
+.portalType li p{
+  color: rgba(255, 255, 255, 0.72);
+  font-size: .75rem;
+}
+/* #p1 .onLoc li i,
+#p2 .onLoc li p{
+  color: orange;
+} */
+.portalOpen{
+  position: relative;
+}
+#port:hover .fa-angle-right{
+  display: block;
+  transform: translateX(1rem);
+}
+
+.portalType a:hover li i,
+.portalType a:hover li p{
+  color: orange;
+}
+.portalOpen .fa-angle-right{
+  position: absolute;
+  right: 0;
+  display: none;
+}
+.typeOpen{
+  display: none;
+}
+
+
+
 
 
 
 @media screen and (max-width:755px) {
-main{
-  grid-template-columns: 5rem auto;
-}
+  main {
+    grid-template-columns: 5rem auto;
+  }
 
-.links_cont li{
-  width: unset;
-}
-.lilside{
-  display: none;
-}
+  .links_cont li {
+    width: unset;
+  }
+
+  .lilside {
+    display: none;
+  }
 }

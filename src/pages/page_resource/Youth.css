@@ -1381,7 +1381,12 @@ body .op {
         display: none;
     }
 }
-
+@media screen and (max-width:817px) {
+    .civicCont, .educbgCont{
+        grid-template-columns: 50% 50%;
+        
+    }
+}
 @media screen and (max-width:981px) {
 
     .youthBody ol section {

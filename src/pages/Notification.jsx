@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import { useState } from 'react';
 
 
 export default function Notification() {
+    
+    const [isUserHover,setUserHovered] = useState(false)
+    const [isNotifHover,setNotifHover] = useState(false)
+
+
+ 
+
     return <>
         <div className="contNotif">
             <div className="headNotif">
@@ -18,7 +26,31 @@ export default function Notification() {
                 <div className="notifBodyCont">
                     <h2>Notifications</h2>
                     <div className="wrapNotifD">
-                        <div className="headNotifData">
+                        <div className={`headNotifData ${isUserHover ? 'hv' : ''}`} onMouseEnter={()=>setUserHovered(true)} onMouseLeave={()=>setUserHovered(false)}>
+                            <ol>
+                                <li><i className="fa fa-hat-cowboy"></i></li>
+                                <p>Hikusama</p>
+                            </ol>
+                            <ol>
+                                <li><i className="fa fa-hat-cowboy"></i></li>
+                                <p>Hikusama</p>
+                            </ol>
+                            <ol>
+                                <li><i className="fa fa-hat-cowboy"></i></li>
+                                <p>Hikusama</p>
+                            </ol>
+                            <ol>
+                                <li><i className="fa fa-hat-cowboy"></i></li>
+                                <p>Hikusama</p>
+                            </ol>
+                            <ol>
+                                <li><i className="fa fa-hat-cowboy"></i></li>
+                                <p>Hikusama</p>
+                            </ol>
+                            <ol>
+                                <li><i className="fa fa-hat-cowboy"></i></li>
+                                <p>Hikusama</p>
+                            </ol>
                             <ol>
                                 <li><i className="fa fa-hat-cowboy"></i></li>
                                 <p>Hikusama</p>
@@ -32,7 +64,7 @@ export default function Notification() {
                                 <p>Hikusama</p>
                             </ol>
                         </div>
-                        <div className="bodyNotifData">
+                        <div className={`bodyNotifData ${isNotifHover ? 'hv' : ''}`} onMouseEnter={()=>setNotifHover(true)} onMouseLeave={()=>setNotifHover(false)}>
                             <ol></ol>
                             <ol></ol>
                             <ol></ol>
@@ -50,21 +82,31 @@ export default function Notification() {
                         <div className="viewore">
                             <Link to={'/youths'}>View all</Link>
                         </div>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
-                            <ol>Hello</ol>
                         <div className="dataDesc">
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
+                            <ol>Hell</ol>
                         </div>
                     </div>
                 </div>
