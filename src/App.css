@@ -124,7 +124,9 @@ main {
   border-radius: 50%;
 
 }
-
+.errorInput {
+    outline-color: #b72525 !important;
+}
 .userpic {
   color: white;
 

@@ -83,10 +83,10 @@ export default function Layout() {
                                     </Link>
                                 </div>
                             </div>
-                            <Link to={'/notification'} id='notifV' className={` ${location.pathname === '/notification' ? 'onLoc' : ''}`} title="Notification">
+                            <Link to={'/bulk_logs'} id='notifV' className={` ${location.pathname === '/bulk_logs' ? 'onLoc' : ''}`} title="bulk logs">
                                 <li>
                                     <i className="fas fa-bell"></i>
-                                    <p className="lilside">Notification</p>
+                                    <p className="lilside">Bulk logs</p>
                                 </li>
                             </Link>
 

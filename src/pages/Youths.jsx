@@ -88,7 +88,7 @@ export default function Youths() {
         }
     }
     const attemptingActionIn = (e) => {
-        const closestItem = e.target.closest('ol');
+        const closestItem = e.target.closest('ul');
         if (closestItem) {
             closestItem.style.backgroundColor = bgList;
             closestItem.classList.add('akika');
@@ -96,7 +96,7 @@ export default function Youths() {
     };
 
     const attemptingActionOut = (e) => {
-        const closestItem = e.target.closest('ol');
+        const closestItem = e.target.closest('ul');
         if (closestItem) {
             closestItem.style.backgroundColor = 'white';
             closestItem.classList.remove('akika');
@@ -314,47 +314,57 @@ export default function Youths() {
                                             duration: .6,
                                         }}
                                         className={isLoading ? 'isloadOp' : ''}>
-                                        <section>
-                                            <div className={actionState != null ? action : ''}>
-                                                <i className="fas fa-trash" onClick={() => deleteUser(youth.y_user.id,)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                                <i className="fas fa-pen" onClick={() => modifyUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                                <i className="fas fa-info" onClick={() => viewUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                            </div>
-                                            <li>
-                                                <p>#</p>
-                                                <p>{count++}</p>
-                                            </li>
-                                            <li>
-                                                <p>Name</p>
-                                                <p>{`${youth.lname}, ${youth.fname} ${youth.mname?.charAt(0)}. `}</p>
-                                            </li>
-                                            <li>
-                                                <p>Type</p>
-                                                <p>{youth.y_user.youthType}</p>
-                                            </li>
-                                            <li>
-                                                <p>Age</p>
-                                                <p>{youth.age}</p>
-                                            </li>
-                                            <li>
-                                                <p>Contact</p>
-                                                <p>{youth.contactNo ?? "00"}</p>
-                                            </li>
-                                            <li>
-                                                <p>Created</p>
-                                                <p>{new Date(youth.created_at).toLocaleDateString('en-US', {
-                                                    month: 'long',
-                                                    day: 'numeric',
-                                                    year: 'numeric'
-                                                })}</p>
-                                            </li>
-                                        </section>
-                                        <div className="prk"></div>
+                                        <ul>
 
-                                        <div className="skills_list">
-                                            <h4>Skills</h4>
-                                            <p>{youth.y_user.skills}</p>
-                                        </div>
+
+                                            <section>
+                                                <div className={actionState != null ? action : ''}>
+                                                    <i className="fas fa-trash" onClick={() => deleteUser(youth.y_user.id,)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
+                                                    <i className="fas fa-pen" onClick={() => modifyUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
+                                                    <i className="fas fa-info" onClick={() => viewUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
+                                                </div>
+                                                <li>
+                                                    <p>#</p>
+                                                    <p>{count++}</p>
+                                                </li>
+                                                <li>
+                                                    <p>Name</p>
+                                                    <p>{`${youth.lname}, ${youth.fname} ${youth.mname?.charAt(0)}. `}</p>
+                                                </li>
+                                                <li>
+                                                    <p>Type</p>
+                                                    <p>{youth.y_user.youthType}</p>
+                                                </li>
+                                                <li>
+                                                    <p>Age</p>
+                                                    <p>{youth.age}</p>
+                                                </li>
+                                                <li>
+                                                    <p>Contact</p>
+                                                    <p>0{youth.contactNo}</p>
+                                                </li>
+                                                <li>
+                                                    <p>Created</p>
+                                                    <p>{new Date(youth.created_at).toLocaleDateString('en-US', {
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                        year: 'numeric'
+                                                    })}</p>
+                                                </li>
+                                            </section>
+                                            <div className="prk"></div>
+
+                                            <div className="skills_list">
+                                                <h4>Skills</h4>
+                                                <p>{youth.y_user.skills}</p>
+                                            </div>
+                                        </ul>
+                                        {/* <div className="viewSec">
+                                            <li>
+                                                <p>{youth.fname}</p>
+                                            </li>
+                                        </div> */}
+
                                     </Motion.ol>
                                 ))
                             )}

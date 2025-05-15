@@ -1,5 +1,5 @@
 import logo from '../assets/logo.png';
-import FormAdd from './youth/youthAdd';
+import FormReg from './youth/youthRegister';
 
 export default function Portal() {
     return <>
@@ -15,7 +15,7 @@ export default function Portal() {
                 </div>
             </div>
             <div className="contRe">
-                <FormAdd />
+                <FormReg />
             </div>
 
             

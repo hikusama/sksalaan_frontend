@@ -81,6 +81,15 @@
     .firstSecPortal{
         height: fit-content;
     }
+    .firstSecPortal img{
+        height: 5rem;
+    }
+    .labelTitle h1{
+        font-size: 1.5rem;
+    }
+    .contPortalReg{
+        height: 100vh;
+    }
 
 }
 @media screen and (max-width:585px) {

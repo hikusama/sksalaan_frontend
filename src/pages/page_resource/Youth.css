@@ -923,9 +923,7 @@ body .op {
     background-color: #424242 !important;
 }
 
-.errorInput {
-    outline-color: #b72525 !important;
-}
+
 
 .error {
     color: #b72525;
@@ -1040,7 +1038,7 @@ body .op {
     height: 100%;
 }
 
-.youthBody ol {
+.youthBody ol ul {
     display: flex;
     background-color: white;
     padding: 1rem;
@@ -1054,25 +1052,25 @@ body .op {
 
 }
 
-.youthBody ol section>*:nth-child(3) p {
+.youthBody ol ul section>*:nth-child(3) p {
     text-overflow: ellipsis;
     overflow: hidden;
     text-wrap: nowrap;
 }
 
-.youthBody ol section {
+.youthBody ol ul section {
     grid-template-columns: min-content 1rem 10rem 2rem 2rem 4.5rem 4.5rem 11rem;
     display: grid;
     align-items: center;
     gap: 1rem;
 }
 
-.youthBody li {
+.youthBody ol ul li {
     font-size: .7rem;
     list-style: none;
 }
 
-.youthBody li>*:nth-child(1) {
+.youthBody ol ul li>*:nth-child(1) {
     font-weight: 600;
     margin-bottom: .2rem;
 }
@@ -1110,7 +1108,7 @@ body .op {
 
 
 
-.youthList ol {
+.youthList ul {
     transition: .2s;
 }
 
@@ -1389,7 +1387,7 @@ body .op {
 }
 @media screen and (max-width:981px) {
 
-    .youthBody ol section {
+    .youthBody ol ul section {
         grid-template-columns: min-content 1rem 10rem 2rem 2rem 4.5rem 4.5rem;
     }
 

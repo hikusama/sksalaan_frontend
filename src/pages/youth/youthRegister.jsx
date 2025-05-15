@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // { isAddOpen, setAddOpen }
-export default function FormAdd({ settab, search }) {
+export default function FormAdd({ settab,search }) {
     // const [isS1FormPass, setS1FormPass] = useState(false);
     // const [isS2FormPass, setS2FormPass] = useState(false);
     // const [isS3FormPass, setS3FormPass] = useState(false);
@@ -275,7 +275,6 @@ export default function FormAdd({ settab, search }) {
             <div className="resSubmit">
                 {submitRes}
                 <div className="linksg">
-                    <button className="findY" onClick={() => { settab(1); search() }}><i className="fas fa-search"></i> Find</button>
                     <button className="adgain" onClick={() => setSubmit(false)}><i className="fas fa-check-circle"></i> Done</button>
                 </div>
             </div>
@@ -286,13 +285,13 @@ export default function FormAdd({ settab, search }) {
                 <div className="stepsHeader">
                     <h2><i className="fas fa-plus"></i> Register Youth</h2>
                     <div className="steps">
-                        <ol className="step1 onStep" onClick={() => { step > 1 && setStep(1) }}>1</ol>
+                        <ol className="step1 onStep" onClick={() => {step > 1 && setStep(1)}}>1</ol>
                         <div className={`line s1`}><li><p className={`${step >= 2 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} onClick={() => { step > 2 && setStep(2) }}>2</ol>
+                        <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} onClick={() => {step > 2 && setStep(2)}}>2</ol>
                         <div className={`line s2`}><li><p className={`${step >= 3 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} onClick={() => { step > 3 && setStep(3) }}>3</ol>
+                        <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} onClick={() => {step > 3 && setStep(3)}}>3</ol>
                         <div className={`line s34`}><li><p className={`${step >= 4 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} onClick={() => { step > 4 && setStep(4) }}>4</ol>
+                        <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} onClick={() => {step > 4 && setStep(4)}}>4</ol>
                         <div className={`line s35`}><li><p className={`${step === 5 ? 'onStepLine' : ''}`}></p></li></div>
                         <ol className={`step5 ${step === 5 ? 'onStep' : ''}`}><i className='fas fa-check'></i></ol>
                     </div>
@@ -437,12 +436,11 @@ export default function FormAdd({ settab, search }) {
 
                                         </div>
                                         <div className='skl'>
-                                            <label htmlFor="sk">Skills</label>
+                                            <label htmlFor="sk">Skills (optional)</label>
                                             <input type="text" id='sk' className={errors.skills ? 'errorInput' : ''} placeholder='Skills'
                                                 value={inputSkill}
                                                 onChange={e => setInputSkill(e.target.value)}
                                             />
-
                                             <i className="fas fa-plus" onClick={() => addSkill()} title="Add skill"></i>
                                         </div>
                                         <div className="skillsList">

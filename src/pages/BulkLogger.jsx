@@ -3,7 +3,7 @@ import logo from '../assets/logo.png';
 import { useState } from 'react';
 
 
-export default function Notification() {
+export default function BulkLogger() {
     
     const [isUserHover,setUserHovered] = useState(false)
     const [isNotifHover,setNotifHover] = useState(false)
@@ -24,7 +24,7 @@ export default function Notification() {
             </div>
             <div className="notifBody">
                 <div className="notifBodyCont">
-                    <h2>Notifications</h2>
+                    <h2>Bulk logs</h2>
                     <div className="wrapNotifD">
                         <div className={`headNotifData ${isUserHover ? 'hv' : ''}`} onMouseEnter={()=>setUserHovered(true)} onMouseLeave={()=>setUserHovered(false)}>
                             <ol>
@@ -83,30 +83,30 @@ export default function Notification() {
                             <Link to={'/youths'}>View all</Link>
                         </div>
                         <div className="dataDesc">
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
-                            <ol>Hell</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
+                            <ol>world</ol>
                         </div>
                     </div>
                 </div>
