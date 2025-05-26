@@ -181,7 +181,9 @@
     border-radius: 0 0 .4rem .4rem;
 }
 
-
+.portalManageBody .intab{
+    height: 0;
+}
 
 .infoHead section {
     display: flex;

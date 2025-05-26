@@ -1070,7 +1070,7 @@ body .op {
     overflow-y: auto;
 }
 
-.youthList .information {
+.information {
     overflow: hidden;
     display: none;
     color: white;
