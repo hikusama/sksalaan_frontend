@@ -10,6 +10,7 @@
     overflow-y: hidden;
     z-index: 1;
 }
+
 /* body #side #youthLink{
     color: orange;               
 } */
@@ -744,6 +745,25 @@ input[type=number]::-webkit-outer-spin-button {
 .skillsList li {
     list-style: none;
 }
+.addCivic .clean2{
+    left: 5rem;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    bottom: -1rem;
+}
+.addCivic{
+    position: relative;
+}
+.civicCont{
+    scrollbar-width: thin;
+    scrollbar-color: #b8c9d1 transparent  ;
+    scrollbar-gutter: stable both-edges;
+    padding: 0 10% 8rem 10% !important;
+    position: relative;
+    height: 16rem;
+    overflow-y: auto;
+    overflow-x:hidden ;
+}
 
 .skillsList i:hover {
     cursor: pointer;
@@ -757,7 +777,17 @@ input[type=number]::-webkit-outer-spin-button {
     flex-wrap: wrap;
     height: 100%;
 }
-
+.skillsL{
+        display: flex
+;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+}
+.skillsL p{
+    width: 50%;
+    text-wrap: wrap;
+}
 .sCont section {
     width: 13rem;
     display: flex;
@@ -1026,7 +1056,10 @@ body .op {
     flex-shrink: 0;
 }
 
+.portalManageBody,
 .youthList {
+    scrollbar-gutter: stable both-edges;
+    scrollbar-width: thin;
     padding-bottom: 6rem;
     display: flex;
     justify-content: start;
@@ -1035,9 +1068,54 @@ body .op {
     gap: .8rem;
     margin-top: 1rem;
     overflow-y: auto;
-    height: 100%;
 }
 
+.youthList .information {
+    overflow: hidden;
+    display: none;
+    color: white;
+    background-color: #132127;
+    outline: none;
+    animation: infoview .5s ease-in-out 0s 1;
+    height: 0;
+}
+
+.youthList .information .infoHead {
+    justify-content: center;
+    text-align: center;
+}
+
+.youthList .hideSkill {
+    display: none;
+}
+
+@keyframes infoview {
+    0% {
+        height: 0;
+        outline: none;
+    }
+}
+
+.ivSh {
+    padding: 1rem;
+}
+.youthList .infoView .skills_list{
+    display: none;   
+}
+.youthList .infoView .information{
+    display: block;
+    height: 32rem;
+    outline: solid 1px rgba(255, 255, 255, 0.362);
+}
+
+
+.youthList ol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.portalManageBody ol ul,
 .youthBody ol ul {
     display: flex;
     background-color: white;
@@ -1052,12 +1130,14 @@ body .op {
 
 }
 
+.portalManageBody ol ul section>*:nth-child(3) p,
 .youthBody ol ul section>*:nth-child(3) p {
     text-overflow: ellipsis;
     overflow: hidden;
     text-wrap: nowrap;
 }
 
+.portalManageBody ol ul section,
 .youthBody ol ul section {
     grid-template-columns: min-content 1rem 10rem 2rem 2rem 4.5rem 4.5rem 11rem;
     display: grid;
@@ -1065,11 +1145,13 @@ body .op {
     gap: 1rem;
 }
 
+.portalManageBody ol ul li,
 .youthBody ol ul li {
     font-size: .7rem;
     list-style: none;
 }
 
+.portalManageBody ol ul li>*:nth-child(1),
 .youthBody ol ul li>*:nth-child(1) {
     font-weight: 600;
     margin-bottom: .2rem;
@@ -1351,8 +1433,7 @@ body .op {
 }
 
 .isloadOp {
-    filter: blur(450);
-    opacity: 50%;
+    display: none;
 }
 
 .sortBy {
@@ -1370,21 +1451,39 @@ body .op {
     padding: 10px;
 }
 
+#youths .editMode{
+    background-color: #000000;
+    outline: solid 1px rgba(255, 255, 255, 0.351);
+    opacity: 100% !important;
+    cursor: default;
+}
 
+@media screen and (max-width:611px) {
 
-
+    .portalManageBody,
+    .youthList {
+        padding: 02rem;
+        align-items: start;
+    }
+}
 
 @media screen and (max-width:1048px) {
+
+    .portalManageBody .prk,
     .youthBody .prk {
         display: none;
     }
 }
+
 @media screen and (max-width:817px) {
-    .civicCont, .educbgCont{
+
+    .civicCont,
+    .educbgCont {
         grid-template-columns: 50% 50%;
-        
+
     }
 }
+
 @media screen and (max-width:981px) {
 
     .youthBody ol ul section {
@@ -1395,11 +1494,13 @@ body .op {
         display: none;
     }
 
+    .portalManageBody .skills_list,
     .youthBody .skills_list {
         bottom: -3rem;
         height: 3.7rem;
     }
 
+    .portalManageBody,
     .youthList {
         gap: 3.7rem;
     }

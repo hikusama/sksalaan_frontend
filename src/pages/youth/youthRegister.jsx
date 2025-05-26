@@ -426,7 +426,7 @@ export default function FormAdd({ settab,search }) {
                                         </div>
                                         <div>
                                             <label htmlFor="nc">Contact no.</label>
-                                            <input type="number" id='nc' min={0} className={errors.contactNo ? 'errorInput' : ''} placeholder='Contact no.'
+                                            <input type="number" id='nc' min={0} className={errors.contactNo ? 'errorInput' : ''} placeholder='9876543210'
                                                 value={formDataS2.contactNo}
                                                 onChange={(e) => {
                                                     setFormdataS2({ ...formDataS2, contactNo: e.target.value })

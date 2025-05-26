@@ -78,8 +78,8 @@ export default function Layout() {
                                 </li>
                                 <div className={`portalType ${!isTypeOpen ? "typeOpen" : ""}`} >
 
-                                    <Link to={'/portal/manage'} id="p2" title="Register" className={` ${location.pathname === '/portal/manage' ? 'onLoc' : ''}`} onClick={(e) => e.stopPropagation()}>
-                                        <li><i className="fas fa-users-cog"></i> <p>Manage</p></li>
+                                    <Link to={'/portal/manage'} id="p2" title="Manage" className={` ${location.pathname === '/portal/manage' ? 'onLoc' : ''}`} onClick={(e) => e.stopPropagation()}>
+                                        <li><i className="fas fa-users-cog"></i> <p className="lilside">Manage</p></li>
                                     </Link>
                                 </div>
                             </div>

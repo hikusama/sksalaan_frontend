@@ -3,14 +3,14 @@ import { useContext, useEffect, useState } from 'react';
 import logo from '../assets/logo.png';
 import axios from 'axios';
 import { motion as Motion } from 'framer-motion';
-import { AppContext } from "../context/AppContext"
+// import { AppContext } from "../context/AppContext"
 
 
 import Create from './account/Create';
 import Modify from './account/Modify';
 
 export default function Accounts() {
-    const { token } = useContext(AppContext)
+    // const { token } = useContext(AppContext)
 
     const [pagination, setPagination] = useState({
         total_items: 0,

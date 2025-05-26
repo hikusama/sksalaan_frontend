@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import logo from '../assets/logo.png';
 import FormAdd from './youth/youthAdd';
 import { motion as Motion } from 'framer-motion';
+import FormModify from './youth/youthModify';
 
 
 export default function Youths() {
+    const [isEduc, setEduc] = useState(true);
+const previouslyActiveRef = useRef(null);
 
     const [pagination, setPagination] = useState({
         total_items: 0,
@@ -12,7 +15,7 @@ export default function Youths() {
         current_page: 0,
     });
     const [sortBy, setSortBy] = useState('fname');
-    const [isSearchBegin, setBeginSearch] = useState(false);
+    const [modifyData, setModifyData] = useState('');
     const [isSearchOn, setSearchOn] = useState(false);
     const [ischangeDb, setVhangeDb] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -31,11 +34,7 @@ export default function Youths() {
         setIsLoading(true)
         setSearchOn(true)
         setSearchOn(false)
-        if (query) {
-            setBeginSearch(true)
-        } else {
-            setBeginSearch(false)
-        }
+ 
 
         const response = await fetch('/api/search', {
             method: 'POST',
@@ -44,7 +43,6 @@ export default function Youths() {
         const data = await response.json();
 
         if (response.ok) {
-            setBeginSearch(false)
             setIsLoading(false)
 
             if (data.data) {
@@ -162,19 +160,40 @@ export default function Youths() {
             setVhangeDb(false)
         }
     }
-    const modifyUser = (id) => {
-        // 
+    const modifyUser = (youth) => {
+        setModifyData(<FormModify step={isAddOpen} youthData={youth} setStep={setAddOpen} search={search} settab={setTabIsClicked}/>)
+        handleTabClick(4);
     }
-    const viewUser = (id) => {
-        // 
-    }
+
+    const viewUser = (elementId) => {
+        const el = document.getElementById(elementId);
+
+        const prevId = previouslyActiveRef.current;
+
+        if (prevId) {
+            const prevEl = document.getElementById(prevId);
+            prevEl?.classList.remove('infoView');
+
+            if (prevId === elementId) {
+                previouslyActiveRef.current = null;
+                console.log('Toggled off:', prevId);
+                return;
+            }
+        }
+
+        if (el) {
+            el.classList.add('infoView');
+            previouslyActiveRef.current = elementId;
+            console.log('Activated:', elementId);
+        }
+    };
 
 
     const handleTabClick = (tabnum) => {
         setTabIsClicked(tabnum)
     }
     useEffect(() => {
-        if (tabClick === 3) {
+        if (tabClick === 3 || tabClick === 4) {
             setAddOpen(true);
         } else {
             setAddOpen(false);
@@ -223,14 +242,16 @@ export default function Youths() {
     } else if (tabClick === 3) {
         //
         typeTab = <FormAdd step={isAddOpen} setStep={setAddOpen} search={search} settab={setTabIsClicked} />
-
+    } else if (tabClick === 4) {
+        // typeTab = <FormModify step={isAddOpen} setStep={setAddOpen} search={search} settab={setTabIsClicked} />
+        typeTab = modifyData
 
     }
     let count = 1;
-    useEffect(() => {
-        search()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // useEffect(() => {
+    //     search()
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
     useEffect(() => {
         search()
@@ -253,12 +274,13 @@ export default function Youths() {
     }, [data, pagination]);
     return <>
 
-        <div id="youths" className={`  ${isAddOpen ? 'youthHeadOpen' : ''}`}>
+        <div id="youths" className={`  ${isAddOpen ? 'youthHeadOpen' : ''}`} onClick={() => viewUser(previouslyActiveRef.current)}>
             <div className={`youthHead`}>
                 <div className="tabButton">
                     <li className={tabClick == 1 ? 'onTab' : ''} onClick={() => handleTabClick(1)}><i className="fas fa-search"></i><p>Find Youth</p></li>
                     <li className={tabClick == 2 ? 'onTab' : ''} onClick={() => handleTabClick(2)}><i className="fas fa-bolt "></i><p>Actions</p></li>
                     <li className={tabClick == 3 ? 'onTab' : ''} onClick={() => handleTabClick(3)}><i className="fas fa-plus"></i><p>Add Youth</p></li>
+                    <li className={`editMode ${tabClick == 4 ? 'onTab' : ''}`} ><i className="fas fa-pen"></i></li>
                 </div>
 
                 <div className="viewBody">
@@ -299,8 +321,9 @@ export default function Youths() {
                         </div></>) : ''}
 
                 </div>
-                <div className="youthList">
-                    {isSearchBegin && typedQ.trim() != "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Searching.....</p> : ''}
+                <div className="youthList" onClick={(e)=>e.stopPropagation()}>
+                    {isLoading && typedQ.trim() == "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Fetching.....</p> : ''}
+                    {isLoading && typedQ.trim() != "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Searching.....</p> : ''}
 
                     {isSearchOn ? "" :
                         (<>
@@ -313,7 +336,7 @@ export default function Youths() {
                                             delay: count * .2,
                                             duration: .6,
                                         }}
-                                        className={isLoading ? 'isloadOp' : ''}>
+                                        id={`infoView${idx}`} className={isLoading ? 'isloadOp' : ''}   >
                                         <ul>
 
 
@@ -321,7 +344,7 @@ export default function Youths() {
                                                 <div className={actionState != null ? action : ''}>
                                                     <i className="fas fa-trash" onClick={() => deleteUser(youth.y_user.id,)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
                                                     <i className="fas fa-pen" onClick={() => modifyUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                                    <i className="fas fa-info" onClick={() => viewUser(youth)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
+                                                    <i className="fas fa-info" onClick={() => viewUser('infoView' + idx)} onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
                                                 </div>
                                                 <li>
                                                     <p>#</p>
@@ -354,17 +377,170 @@ export default function Youths() {
                                             </section>
                                             <div className="prk"></div>
 
-                                            <div className="skills_list">
+                                            <div className={`skills_list`}>
                                                 <h4>Skills</h4>
-                                                <p>{youth.y_user.skills}</p>
+                                                <p>{youth.y_user.skills.replace(/,\s*/g, ", ")}</p>
                                             </div>
                                         </ul>
-                                        {/* <div className="viewSec">
-                                            <li>
-                                                <p>{youth.fname}</p>
-                                            </li>
-                                        </div> */}
 
+                                        <div className="information" onClick={(e) => e.stopPropagation()}>
+                                            <div className="ivSh">
+
+                                                <div className="infoHead">
+                                                    <section>
+                                                        <li>
+                                                            <h3>{youth.fname}</h3>
+                                                            <p>Given</p>
+                                                        </li>
+                                                        <li>
+                                                            <h3>{youth.mname}</h3>
+                                                            <p>Middle</p>
+                                                        </li>
+                                                        <li>
+                                                            <h3>{youth.lname}</h3>
+                                                            <p>Last</p>
+                                                        </li>
+                                                    </section>
+                                                </div>
+                                                <div className={`informBody`}>
+                                                    <section>
+                                                        <div className="lt">
+                                                            <div className="skillsL">
+                                                                <p>{youth.y_user.skills.trim().replace(/,\s*/g, ", ") ?? 'no skills krazy dude'}</p>
+                                                                <p>Skills</p>
+                                                            </div>
+                                                            <li>
+                                                                <p>{youth.weight}</p>
+                                                                <p>Weight</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.height}</p>
+                                                                <p>Height</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.gender ?? 'N/A'}</p>
+                                                                <p>Gender</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.noOfChildren ?? 0}</p>
+                                                                <p>Children</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.civilStatus}</p>
+                                                                <p>Civil status</p>
+                                                            </li>
+                                                        </div>
+                                                        <div className="bgtxt">
+                                                            <li>
+                                                                <p>{youth.address}</p>
+                                                                <p>Address</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.dateOfBirth}</p>
+                                                                <p>Date of Birth</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.placeOfBirth}</p>
+                                                                <p>Place of Birth</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.occupation ?? 'None'}</p>
+                                                                <p>Occupation</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>{youth.religion}</p>
+                                                                <p>Religion</p>
+                                                            </li>
+                                                        </div>
+
+                                                    </section>
+                                                    <section>
+                                                        <div className="edciHead">
+                                                            <div className="edciHeadIn">
+
+                                                                <button onClick={() => setEduc(true)} className={`${!isEduc ? 'off' : 'ined'}`}>Educational BG</button>
+                                                                <button onClick={() => setEduc(false)} className={`${isEduc ? 'off' : 'ined'}`}>Civic Involvement</button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="edciBody">
+                                                            <div className={`${isEduc ? '' : 'ed'}`}>
+                                                                <table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Level</th>
+                                                                            <th>School</th>
+                                                                            <th>Period of attend.</th>
+                                                                            <th>Year Graduate</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {youth.y_user.educbg.map((ebg, idx2) => (
+                                                                            <tr key={idx2}>
+                                                                                <td>{ebg.level}</td>
+                                                                                <td>{ebg.nameOfSchool}</td>
+                                                                                <td>{
+                                                                                    new Date(ebg.periodOfAttendance).toLocaleDateString('en-US', {
+                                                                                        month: 'long',
+                                                                                        day: 'numeric',
+                                                                                        year: 'numeric'
+                                                                                    })}</td>
+                                                                                <td>{ebg.yearGraduate}</td>
+                                                                            </tr>
+                                                                        ))}
+                                                                        {/* 
+                                                                                                                                                {youth.y_user.educbg.map((ebg, idx2) => {
+                                                                            
+                                                                        {youth.y_user.educbg.map((ebg, idx2) => {
+                                                                            <tr key={idx2}>
+                                                                                <td>{ebg.level}</td>
+                                                                                <td>{ebg.nameOfSchool}</td>
+                                                                                <td>{ebg.periodOfAttendance}</td>
+                                                                                <td>{ebg.yearGraduate}</td>
+                                                                            </tr>
+                                                                        })}
+                                                                            
+                                                                        })}
+                                                                        */}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div className={`${!isEduc ? '' : 'cv'}`}>
+                                                                <table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Organization</th>
+                                                                            <th>Address</th>
+                                                                            <th>Date</th>
+                                                                            <th>Year Graduated</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {youth.y_user.civic_involvement.map((civ, idx2) => (
+                                                                            <tr key={idx2}>
+                                                                                <td>{civ.nameOfOrganization}</td>
+                                                                                <td>{civ.addressOfOrganization}</td>
+                                                                                <td>{`${new Date(civ.start).toLocaleDateString('en-US', {
+                                                                                    month: 'long',
+                                                                                    day: 'numeric',
+                                                                                    year: 'numeric'
+                                                                                })} - 
+                                                                                ${new Date(civ.end).toLocaleDateString('en-US', {
+                                                                                    month: 'long',
+                                                                                    day: 'numeric',
+                                                                                    year: 'numeric'
+                                                                                })}`}
+                                                                                </td>
+                                                                                <td>{civ.yearGraduated}</td>
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </Motion.ol>
                                 ))
                             )}
@@ -373,46 +549,8 @@ export default function Youths() {
                     <ul className={`nxtPage ${isLoading ? 'isloadOp' : ''}`}>
                         {nxtPage}
                     </ul>
-                    {/* <ol >
-                        <section>
 
-                            <div className={actionState != null ? action : ''}>
-                                <i className="fas fa-trash" onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                <i className="fas fa-pen" onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                                <i className="fas fa-info" onMouseLeave={attemptingActionOut} onMouseEnter={attemptingActionIn}></i>
-                            </div>
-                            <li>
-                                <p>#</p>
-                                <p>1</p>
-                            </li>
-                            <li>
-                                <p>Name</p>
-                                <p>Ramillano, Incent E.</p>
-                            </li>
-                            <li>
-                                <p>Type</p>
-                                <p>ISY</p>
-                            </li>
-                            <li>
-                                <p>Age</p>
-                                <p>18</p>
-                            </li>
-                            <li>
-                                <p>Contact</p>
-                                <p>09856093241</p>
-                            </li>
-                            <li>
-                                <p>Created</p>
-                                <p>25-04-09</p>
-                            </li>
-                        </section>
-                        <div className="prk"></div>
 
-                        <div className="skills_list">
-                            <h4>Skills</h4>
-                            <p>Electrical, Farming, Bullying</p>
-                        </div>
-                    </ol> */}
 
 
                 </div>

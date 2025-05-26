@@ -1,0 +1,369 @@
+.portalManage {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    background-color: #132127;
+    height: 100%;
+    color: white;
+}
+
+.dashPortalManage {
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+}
+
+.hd {
+    display: grid;
+    place-items: center;
+    gap: .4rem;
+}
+
+.hd i {
+    font-size: 2rem;
+    animation: bl 2s ease-in 0s infinite;
+    opacity: 0;
+
+}
+
+@keyframes bl {
+    70% {
+        opacity: 1;
+        transform: translate(1rem, -1rem) rotate(30deg);
+    }
+}
+
+:root {
+    --main: #132127;
+}
+
+.bodyPortalManage {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) 1rem;
+
+}
+
+.portalManageBody ol ul {
+    background-color: #274451;
+}
+
+.headContMain {
+    padding: 1rem 0 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.headContMain li {
+    list-style: none;
+    position: relative;
+    color: black;
+}
+
+.headContMain li i {
+    position: absolute;
+    top: 50%;
+    left: 1.8rem;
+    transform: translate(-50%, -50%);
+    border-right: solid 1px;
+    width: 1.5rem;
+}
+
+.headContMain li input {
+    padding: 0 1rem 0 3rem;
+    height: 2.5rem;
+    border-radius: 5rem;
+    width: 12rem;
+    border: solid 1px;
+}
+
+.portalManageBody ol {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.portalManageBody {
+    scrollbar-color: #d1cfcf90 var(--main);
+}
+
+.portalManageBody ol ul {
+    border: solid 1px rgba(255, 255, 255, 0.275);
+}
+
+.portalManageBody ol ul section {
+    grid-template-columns: min-content 10rem 2rem 2rem 4.5rem 4.5rem 11rem;
+}
+
+.portalManageBody .skills_list {
+    background-color: rgb(9, 30, 40);
+    overflow: hidden;
+    border-radius: 1rem 1rem 1rem 4rem;
+    outline: solid 1px rgba(255, 255, 255, 0.296);
+}
+
+.portalManageBody ol ul {
+    position: relative;
+}
+
+.actReq,
+.ar {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    justify-content: center;
+    align-items: center;
+    place-items: center;
+}
+
+.actReq button,
+.ar button {
+    font-size: .7rem;
+    cursor: pointer;
+    ;
+    height: 1.8rem;
+    border-radius: .4rem;
+    border: none;
+    outline: solid 1px rgba(255, 255, 255, 0.441);
+    width: 5rem;
+    color: white;
+}
+
+.actReq button:nth-child(1),
+.ar button:nth-child(1) {
+    background-color: #306076;
+}
+
+.actReq button:nth-child(2),
+.ar button:nth-child(2) {
+    background-color: #0b1920;
+}
+
+.actReq button:nth-child(1):hover,
+.ar button:nth-child(1):hover {
+    background-color: green;
+    transition: .3s;
+}
+
+.actReq button:nth-child(2):hover,
+.ar button:nth-child(2):hover {
+    background-color: red;
+    transition: .3s;
+}
+
+.iport i {
+    text-align: center;
+    display: grid;
+    place-items: center;
+    font-size: .9rem;
+    border-radius: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+    outline: solid 1px rgba(255, 255, 255, 0.441);
+    background-color: #132831;
+}
+
+.iport i:hover {
+    background-color: #257c6b;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.information {
+    overflow-y: hidden;
+    outline: solid 1px rgba(255, 255, 255, 0.362);
+    width: 94%;
+    /* height: 28rem; */
+    /* height: 0; */
+    background-color: #2D3A3F;
+    border-radius: 0 0 .4rem .4rem;
+}
+
+
+
+.infoHead section {
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.infoHead {
+    display: flex;
+    justify-content: space-between;
+}
+
+.infoHead section:nth-child(1) h3 {
+    max-width: 6rem;
+
+}
+
+.infoHead section:nth-child(1) h3 {
+    font-size: 1rem;
+}
+
+.infoHead section:nth-child(1) p {
+    margin-top: .2rem;
+    font-size: .8rem;
+    color: rgba(255, 255, 255, 0.595);
+}
+
+.informBody {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+
+}
+
+.informBody section:nth-child(1)>* {
+    display: flex;
+    justify-content: center;
+    gap: .8rem;
+    flex-wrap: wrap;
+}
+
+.skillsL {
+    width: 100%;
+    padding: 1rem 0;
+
+}
+
+.lt {
+    text-align: center;
+    margin: 2.5rem;
+
+}
+
+.lt p:nth-child(2) {
+    font-size: .8rem;
+    color: rgba(255, 255, 255, 0.595);
+}
+
+.bgtxt p:nth-child(2) {
+    font-size: .8rem;
+    color: rgba(255, 255, 255, 0.595);
+}
+
+
+.cv,
+.ed {
+    display: none;
+}
+
+
+.edciHead {
+    display: flex;
+    justify-content: center;
+    gap: .8rem;
+    margin-bottom: 1rem;
+}
+
+.edciHead button {
+    cursor: pointer;
+    background: transparent;
+    color: white;
+    border: none;
+    padding: .4rem;
+    font-weight: 600;
+    width: 10rem;
+    font-size: .8rem;
+}
+
+.edciHead .off,
+.edciHead .ined {
+    outline: solid 1px rgba(255, 255, 255, 0.256);
+    border-radius: .8rem;
+    background-color: #4e6b7a;
+}
+
+.edciHead .off {
+    outline: solid 1px rgba(255, 255, 255, 0.066);
+    transform: scale(.9);
+    transition: .3s;
+    background-color: #16161667;
+
+}
+
+.edciBody table {
+    border-collapse: collapse;
+}
+
+.edciBody table th {
+    text-align: start;
+}
+
+.edciBody table {
+    width: 100%;
+}
+
+.edciBody table th,
+.edciBody table td {
+    font-size: .8rem;
+    border: solid 1px rgba(255, 255, 255, 0.256);
+    padding: .5rem .3rem;
+}
+
+.edciBody {
+    height: 9rem;
+    overflow-y: auto;
+    scrollbar-gutter: stable both-edges;
+    scrollbar-width: thin;
+    scrollbar-color: gray transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width:981px) {
+
+    .portalManageBody ol ul section {
+        grid-template-columns: min-content 1rem 10rem 2rem 2rem 4.5rem 4.5rem;
+    }
+}

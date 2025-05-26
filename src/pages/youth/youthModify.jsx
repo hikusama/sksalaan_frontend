@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // { isAddOpen, setAddOpen }
-export default function FormAdd({ settab, search }) {
+export default function FormModify({ settab, search, youthData }) {
     // const [isS1FormPass, setS1FormPass] = useState(false);
     // const [isS2FormPass, setS2FormPass] = useState(false);
     // const [isS3FormPass, setS3FormPass] = useState(false);
@@ -32,7 +32,52 @@ export default function FormAdd({ settab, search }) {
 
 
 
+    const fill = () => {
+        console.log(youthData.religion);
 
+        setFormdataS1({
+            // key: youthData.,
+            id: youthData.id,
+            firstname: youthData.fname,
+            middlename: youthData.mname,
+            lastname: youthData.lname,
+            address: youthData.address,
+            sex: youthData.sex,
+            age: youthData.age,
+            gender: youthData.gender
+        });
+        setFormdataS2({
+            youthType: youthData.y_user.youthType,
+            contactNo: youthData.contactNo,
+            dateOfBirth: youthData.dateOfBirth,
+            placeOfBirth: youthData.placeOfBirth,
+            noOfChildren: youthData.noOfChildren,
+            height: youthData.height,
+            weight: youthData.weight,
+            civilStatus: youthData.civilStatus,
+            occupation: youthData.occupation,
+            religion: 'Christianity',
+            skills: []
+        });
+        let skData = youthData.y_user.skills.split(',').map(item => item.trim());
+        setSkills(skData)
+
+
+        const org = youthData.y_user.civic_involvement.map(({ nameOfOrganization, addressOfOrganization, ...rest }) => ({
+            organization: nameOfOrganization,
+            orgaddress: addressOfOrganization,
+            ...rest
+        }));
+        const ed = youthData.y_user.educbg.map(({ periodOfAttendance, ...rest }) => ({
+            pod: periodOfAttendance,
+            ...rest
+        }));
+
+        setEducBg(ed)
+        setCivic(org)
+
+
+    }
 
 
 
@@ -72,6 +117,7 @@ export default function FormAdd({ settab, search }) {
 
 
     const [formDataS1, setFormdataS1] = useState({
+        id: 0,
         firstname: "",
         middlename: "",
         lastname: "",
@@ -102,8 +148,31 @@ export default function FormAdd({ settab, search }) {
 
     async function submitAllData() {
 
-        const res = await fetch('/api/registerYouth', {
-            method: 'post',
+        // const form1 = formDataS1.map(({ firstname, middlename,lastname, ...rest }) => ({
+        //     fname: firstname,
+        //     mname: middlename,
+        //     lname: lastname,
+        //     ...rest
+        // }));
+
+
+        // const org = civic.map(({ organization, orgaddress, ...rest }) => ({
+        //     nameOfOrganization: organization,
+        //     addressOfOrganization: orgaddress,
+        //     ...rest
+        // }));
+
+        // const ed = educBg.map(({ pod, ...rest }) => ({
+        //     periodOfAttendance: pod,
+        //     ...rest
+        // }));
+
+        // setCivic(org);
+        // setEducBg(ed);
+
+
+        const res = await fetch(`/api/youth/${formDataS1.id}`, {
+            method: 'PATCH',
             body: JSON.stringify({
                 skillsf: skills.join(","),
                 ...formDataS1,
@@ -115,41 +184,56 @@ export default function FormAdd({ settab, search }) {
         });
         setErrors({})
         setSubmit(true)
-        setSkills([])
         setStep(1)
-        setEducBg([])
-        setCivic([])
 
-        setFormdataS1({
-            firstname: "",
-            middlename: "",
-            lastname: "",
-            address: "",
-            sex: "",
-            age: "",
-            gender: ""
-        });
+        // const org2 = civic.map(({ nameOfOrganization, addressOfOrganization, ...rest }) => ({
+        //     organization: nameOfOrganization,
+        //     orgaddress: addressOfOrganization,
+        //     ...rest
+        // }));
+        // const ed2 = educBg.map(({ periodOfAttendance, ...rest }) => ({
+        //     pod: periodOfAttendance,
+        //     ...rest
+        // }));
 
-        setFormdataS2({
-            youthType: '',
-            contactNo: '',
-            dateOfBirth: '',
-            placeOfBirth: '',
-            noOfChildren: '',
-            height: '',
-            weight: '',
-            civilStatus: '',
-            occupation: '',
-            religion: '',
-            skills: []
-        });
+        // setEducBg(ed2)
+        // setCivic(org2)
+
+        // setSkills([])
+        // setEducBg([])
+        // setCivic([])
+
+        // setFormdataS1({
+        //     firstname: "",
+        //     middlename: "",
+        //     lastname: "",
+        //     address: "",
+        //     sex: "",
+        //     age: "",
+        //     gender: ""
+        // });
+
+        // setFormdataS2({
+        //     youthType: '',
+        //     contactNo: '',
+        //     dateOfBirth: '',
+        //     placeOfBirth: '',
+        //     noOfChildren: '',
+        //     height: '',
+        //     weight: '',
+        //     civilStatus: '',
+        //     occupation: '',
+        //     religion: '',
+        //     skills: []
+        // });
+        const data = await res.json()
         setIsLoading(false)
 
         if (res.ok) {
 
-            setSubmitRes(<p><span ><i className="fas fa-thumbs-up"></i></span> Success...</p>)
+            setSubmitRes(<p><span ><i className="fas fa-thumbs-up"></i></span>{data.message}</p>)
         } else {
-            setSubmitRes(<p className="failed"><span className="spt"><i className="fas fa-plus"></i></span> Register failed...</p>)
+            setSubmitRes(<p className="failed"><span className="spt"><i className="fas fa-plus"></i></span> Action failed...</p>)
         }
 
 
@@ -258,13 +342,18 @@ export default function FormAdd({ settab, search }) {
             skills: skills
         }));
     }, [skills]);
+    useEffect(() => {
+ 
+        fill();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [youthData]);
 
     useEffect(() => {
         if (isLoading) {
             setIsNext(<i className="fas fa-spinner fa-spin"></i>);
             setIsAdd(<i className="fas fa-spinner fa-spin"></i>);
         } else {
-            setIsNext(step === 5 ? 'Confirm' : 'Next');
+            setIsNext(step === 5 ? 'Update' : 'Next');
             setIsAdd('Add');
         }
     }, [isLoading, step]);
@@ -276,7 +365,7 @@ export default function FormAdd({ settab, search }) {
                 {submitRes}
                 <div className="linksg">
                     <button className="findY" onClick={() => { settab(1); search() }}><i className="fas fa-search"></i> Find</button>
-                    <button className="adgain" onClick={() => setSubmit(false)}><i className="fas fa-check-circle"></i> Done</button>
+                    <button className="adgain" onClick={() => { setSubmit(false); search(); }}><i className="fas fa-check-circle"></i> Done</button>
                 </div>
             </div>
 
@@ -284,15 +373,15 @@ export default function FormAdd({ settab, search }) {
             <div className="add">
 
                 <div className="stepsHeader">
-                    <h2><i className="fas fa-plus"></i> Register Youth</h2>
+                    <h2><i className="fas fa-plus"></i> Modify Youth</h2>
                     <div className="steps">
-                        <ol className="step1 onStep" onClick={() => { step > 1 && setStep(1) }}>1</ol>
+                        <ol className="step1 onStep">1</ol>
                         <div className={`line s1`}><li><p className={`${step >= 2 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} onClick={() => { step > 2 && setStep(2) }}>2</ol>
+                        <ol className={`step2 ${step >= 2 ? 'onStep' : ''}`} >2</ol>
                         <div className={`line s2`}><li><p className={`${step >= 3 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} onClick={() => { step > 3 && setStep(3) }}>3</ol>
+                        <ol className={`step3 ${step >= 3 ? 'onStep' : ''}`} >3</ol>
                         <div className={`line s34`}><li><p className={`${step >= 4 ? 'onStepLine' : ''}`}></p></li></div>
-                        <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} onClick={() => { step > 4 && setStep(4) }}>4</ol>
+                        <ol className={`step4 ${step >= 4 ? 'onStep' : ''}`} >4</ol>
                         <div className={`line s35`}><li><p className={`${step === 5 ? 'onStepLine' : ''}`}></p></li></div>
                         <ol className={`step5 ${step === 5 ? 'onStep' : ''}`}><i className='fas fa-check'></i></ol>
                     </div>
@@ -552,10 +641,10 @@ export default function FormAdd({ settab, search }) {
                                             >
 
                                                 <option value="">Religion</option>
-                                                <option value="islam">Islam</option>
-                                                <option value="christianity">Christianity</option>
-                                                <option value="agnostic">Agnostic</option>
-                                                <option value="other">Other</option>
+                                                <option value="Islam">Islam</option>
+                                                <option value="Christianity">Christianity</option>
+                                                <option value="Agnostic">Agnostic</option>
+                                                <option value="Other">Other</option>
                                             </select>
                                             {errors.religion && <p className="error">{errors.religion[0]}</p>}
                                         </div>
@@ -628,7 +717,13 @@ export default function FormAdd({ settab, search }) {
                                             <ol>
                                                 <li>Period of Attendance</li>
                                                 {educBg.map((entry, index) => (
-                                                    <li key={`period-${index}`}>{entry.pod}</li>
+                                                    <li key={`period-${index}`}>{
+                                                        new Date(entry.pod).toLocaleDateString('en-US', {
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                            year: 'numeric'
+                                                        })
+                                                    }</li>
                                                 ))}
                                             </ol>
                                             <ol>
@@ -694,8 +789,12 @@ export default function FormAdd({ settab, search }) {
                                         </div>
                                         <div className="addCivic">
                                             <button onClick={() => addCivic()}>{isAdd}</button>
+                                            <div className="clean2">
+                                                <button onClick={() => setCivic([])} className={`clr2 ${civic.length === 0 && 'clrG2'}`}>Clear all</button>
+                                            </div>
                                         </div>
                                         <div className="civicCont">
+
                                             <ol>
                                                 <li>Organization</li>
                                                 {civic.map((entry, index) => (
@@ -711,13 +810,25 @@ export default function FormAdd({ settab, search }) {
                                             <ol>
                                                 <li>Start</li>
                                                 {civic.map((entry, index) => (
-                                                    <li key={index}>{entry.start}</li>
+                                                    <li key={index}>{
+                                                        new Date(entry.start).toLocaleDateString('en-US', {
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                            year: 'numeric'
+                                                        })
+                                                    }</li>
                                                 ))}
                                             </ol>
                                             <ol>
                                                 <li>End</li>
                                                 {civic.map((entry, index) => (
-                                                    <li key={index}>{entry.end}</li>
+                                                    <li key={index}>{
+                                                        new Date(entry.end).toLocaleDateString('en-US', {
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                            year: 'numeric'
+                                                        })
+                                                    }</li>
                                                 ))}
                                             </ol>
                                             <ol>
@@ -727,9 +838,7 @@ export default function FormAdd({ settab, search }) {
                                                 ))}
                                             </ol>
                                         </div>
-                                        <div className="clean2">
-                                            <button onClick={() => setCivic([])} className={`clr2 ${civic.length === 0 && 'clrG2'}`}>Clear all</button>
-                                        </div>
+
                                     </section>
                                 </div>
                             </div>
@@ -845,13 +954,25 @@ export default function FormAdd({ settab, search }) {
                                             <ol>
                                                 <li>Start</li>
                                                 {civic.map((entry, index) => (
-                                                    <p key={index}>{entry.start}</p>
+                                                    <p key={index}>{
+                                                        new Date(entry.start).toLocaleDateString('en-US', {
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                            year: 'numeric'
+                                                        })
+                                                    }</p>
                                                 ))}
                                             </ol>
                                             <ol>
                                                 <li>End</li>
                                                 {civic.map((entry, index) => (
-                                                    <p key={index}>{entry.end}</p>
+                                                    <p key={index}>{
+                                                        new Date(entry.end).toLocaleDateString('en-US', {
+                                                            month: 'long',
+                                                            day: 'numeric',
+                                                            year: 'numeric'
+                                                        })
+                                                    }</p>
                                                 ))}
                                             </ol>
                                             <ol>

@@ -247,6 +247,7 @@ main {
 
 
 
+
 @media screen and (max-width:755px) {
   main {
     grid-template-columns: 5rem auto;
