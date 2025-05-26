@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+import { motion as Motion } from 'framer-motion';
 
 
 
@@ -45,6 +46,8 @@ export default function PortalManage() {
                     setData(data.data)
                 }
                 setPagination(data.pagination)
+                console.log(data);
+
 
             } else {
                 setPagination({
@@ -113,7 +116,7 @@ export default function PortalManage() {
                     </li>
                 </div>
                 <div className="portalManageBody">
-                    
+
                     {data.map((item, idx) =>
                         item.youthUser.map((youth) => (
                             <Motion.ol key={`${idx}-${count}`}
@@ -161,10 +164,10 @@ export default function PortalManage() {
                                         </li>
                                     </section>
 
-                                    {/* <div className="skills_list ar">
-                                <button>Approved</button>
-                                <button>Delete</button>
-                            </div> */}
+                                    <div className="skills_list ar">
+                                        <button>Approved</button>
+                                        <button>Delete</button>
+                                    </div>
                                 </ul>
                                 <div className="information" >
                                     <div className="infoHead">
@@ -191,49 +194,53 @@ export default function PortalManage() {
                                         <section>
                                             <div className="lt">
                                                 <div className="skillsL">
-                                                    <p>Skills</p>
+                                                    <p>{youth.y_user.skills.trim().replace(/,\s*/g, ", ") ?? 'no skills krazy dude'}</p>
                                                     <p>Skills</p>
                                                 </div>
                                                 <li>
-                                                    <p>45</p>
+                                                    <p>{youth.weight}</p>
                                                     <p>Weight</p>
                                                 </li>
                                                 <li>
-                                                    <p>45</p>
+                                                    <p>{youth.height}</p>
                                                     <p>Height</p>
                                                 </li>
                                                 <li>
-                                                    <p>N/A</p>
+                                                    <p>{youth.gender ?? 'N/A'}</p>
                                                     <p>Gender</p>
                                                 </li>
                                                 <li>
-                                                    <p>0</p>
+                                                    <p>{youth.noOfChildren ?? 0}</p>
                                                     <p>Children</p>
                                                 </li>
                                                 <li>
-                                                    <p>Single</p>
+                                                    <p>{youth.civilStatus}</p>
                                                     <p>Civil status</p>
                                                 </li>
                                             </div>
                                             <div className="bgtxt">
                                                 <li>
-                                                    <p>Lamisahan</p>
+                                                    <p>{youth.address}</p>
                                                     <p>Address</p>
                                                 </li>
                                                 <li>
-                                                    <p>Lamisahan</p>
+                                                    <p>{new Date(youth.dateOfBirth).toLocaleDateString('en-US', {
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                        year: 'numeric'
+                                                    })}</p>
                                                     <p>Date of Birth</p>
                                                 </li>
                                                 <li>
-                                                    <p>Lamisahan</p>
+                                                    <p>{youth.placeOfBirth}</p>
                                                     <p>Place of Birth</p>
                                                 </li>
                                                 <li>
-                                                    <p>Lamisahan</p>
+                                                    <p>{youth.occupation ?? 'None'}</p>
                                                     <p>Occupation</p>
                                                 </li>
                                                 <li>
-                                                    <p>Lamisahan</p>
+                                                    <p>{youth.religion}</p>
                                                     <p>Religion</p>
                                                 </li>
                                             </div>
@@ -258,24 +265,20 @@ export default function PortalManage() {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024</td>
-                                                                <td>2024</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024</td>
-                                                                <td>2024</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024</td>
-                                                                <td>2024</td>
-                                                            </tr>
+
+                                                            {youth.y_user.educbg.map((ebg, idx2) => (
+                                                                <tr key={idx2}>
+                                                                    <td>{ebg.level}</td>
+                                                                    <td>{ebg.nameOfSchool}</td>
+                                                                    <td>{
+                                                                        new Date(ebg.periodOfAttendance).toLocaleDateString('en-US', {
+                                                                            month: 'long',
+                                                                            day: 'numeric',
+                                                                            year: 'numeric'
+                                                                        })}</td>
+                                                                    <td>{ebg.yearGraduate}</td>
+                                                                </tr>
+                                                            ))}
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -290,36 +293,24 @@ export default function PortalManage() {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024 - Jan 12 2025</td>
-                                                                <td>2024</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024</td>
-                                                                <td>2024</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024</td>
-                                                                <td>2024</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024</td>
-                                                                <td>2024</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Elementary</td>
-                                                                <td>ZPPSU</td>
-                                                                <td>May, 19 2024</td>
-                                                                <td>2024</td>
-                                                            </tr>
+                                                            {youth.y_user.civic_involvement.map((civ, idx2) => (
+                                                                <tr key={idx2}>
+                                                                    <td>{civ.nameOfOrganization}</td>
+                                                                    <td>{civ.addressOfOrganization}</td>
+                                                                    <td>{`${new Date(civ.start).toLocaleDateString('en-US', {
+                                                                        month: 'long',
+                                                                        day: 'numeric',
+                                                                        year: 'numeric'
+                                                                    })} - 
+                                                                                ${new Date(civ.end).toLocaleDateString('en-US', {
+                                                                        month: 'long',
+                                                                        day: 'numeric',
+                                                                        year: 'numeric'
+                                                                    })}`}
+                                                                    </td>
+                                                                    <td>{civ.yearGraduated}</td>
+                                                                </tr>
+                                                            ))}
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -330,7 +321,7 @@ export default function PortalManage() {
                             </Motion.ol>
                         ))
                     )}
-                    
+
                 </div>
             </div>
         </div >

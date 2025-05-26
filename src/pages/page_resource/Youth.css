@@ -1099,12 +1099,12 @@ body .op {
 .ivSh {
     padding: 1rem;
 }
-.youthList .infoView .skills_list{
+.infoView .skills_list{
     display: none;   
 }
-.youthList .infoView .information{
+.infoView .information{
     display: block;
-    height: 32rem;
+    height: 100%;
     outline: solid 1px rgba(255, 255, 255, 0.362);
 }
 
@@ -1498,8 +1498,8 @@ body .op {
 
     .portalManageBody .skills_list,
     .youthBody .skills_list {
-        bottom: -3rem;
-        height: 3.7rem;
+        bottom: -2.8rem;
+        height: 3.2rem;
     }
 
     .portalManageBody,
