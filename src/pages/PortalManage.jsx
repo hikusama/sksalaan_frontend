@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 
@@ -7,6 +7,55 @@ import { useState } from "react"
 export default function PortalManage() {
     const [isEduc, setEduc] = useState(true);
     const [listPosition, setListPosition] = useState(null);
+    const [data, setData] = useState([]);
+    const [pagination, setPagination] = useState({
+        total_items: 0,
+        total_pages: 0,
+        current_page: 0,
+    });
+
+
+
+    const search = async (page = 1) => {
+        if (isLoading) {
+            return
+        }
+        // setIsLoading(true)
+
+
+        const response = await fetch('/api/search', {
+            method: 'POST',
+            body: JSON.stringify({ q: query, page: page, typeId: null }),
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+            setIsLoading(false)
+
+            if (data.data) {
+                if (page > 1) {
+                    setData(prevData => [...prevData, ...data.data]);
+                } else {
+                    // setData([])
+                    setData(data.data)
+                }
+                setPagination(data.pagination)
+
+            } else {
+                setPagination({
+                    total_items: 0,
+                    total_pages: 0,
+                    current_page: 0,
+                })
+            }
+        }
+    }
+
+    useEffect(() => {
+        search()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
 
     return <>
         <div className="portalManage">

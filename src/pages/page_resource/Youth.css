@@ -1457,7 +1457,9 @@ body .op {
     opacity: 100% !important;
     cursor: default;
 }
-
+.formBody label, .formBody .skl label{
+    margin: 0 !important;
+}
 @media screen and (max-width:611px) {
 
     .portalManageBody,

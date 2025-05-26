@@ -276,7 +276,7 @@ export default function FormAdd({ settab, search }) {
                 {submitRes}
                 <div className="linksg">
                     <button className="findY" onClick={() => { settab(1); search() }}><i className="fas fa-search"></i> Find</button>
-                    <button className="adgain" onClick={() => setSubmit(false)}><i className="fas fa-check-circle"></i> Done</button>
+                    <button className="adgain" onClick={() => {setSubmit(false); search()}}><i className="fas fa-check-circle"></i> Done</button>
                 </div>
             </div>
 
