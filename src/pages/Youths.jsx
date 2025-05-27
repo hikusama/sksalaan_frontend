@@ -7,7 +7,7 @@ import FormModify from './youth/youthModify';
 
 export default function Youths() {
     const [isEduc, setEduc] = useState(true);
-const previouslyActiveRef = useRef(null);
+    const previouslyActiveRef = useRef(null);
 
     const [pagination, setPagination] = useState({
         total_items: 0,
@@ -34,7 +34,7 @@ const previouslyActiveRef = useRef(null);
         setIsLoading(true)
         setSearchOn(true)
         setSearchOn(false)
- 
+
 
         const response = await fetch('/api/search', {
             method: 'POST',
@@ -130,7 +130,7 @@ const previouslyActiveRef = useRef(null);
 
     const deleteUser = async (id) => {
 
-        // 
+        
         let conf = prompt("Type 'delete' to complete.")
 
         if (conf?.trim().toLowerCase() === "delete") {
@@ -153,15 +153,15 @@ const previouslyActiveRef = useRef(null);
                     .filter(group => group.youthUser.length > 0);
 
                 setData(updated);
+            } else {
+                setVhangeDb(false)
             }
 
 
-        } else {
-            setVhangeDb(false)
         }
     }
     const modifyUser = (youth) => {
-        setModifyData(<FormModify step={isAddOpen} youthData={youth} setStep={setAddOpen} search={search} settab={setTabIsClicked}/>)
+        setModifyData(<FormModify step={isAddOpen} youthData={youth} setStep={setAddOpen} search={search} settab={setTabIsClicked} />)
         handleTabClick(4);
     }
 
@@ -321,7 +321,7 @@ const previouslyActiveRef = useRef(null);
                         </div></>) : ''}
 
                 </div>
-                <div className="youthList" onClick={(e)=>e.stopPropagation()}>
+                <div className="youthList" onClick={(e) => e.stopPropagation()}>
                     {isLoading && typedQ.trim() == "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Fetching.....</p> : ''}
                     {isLoading && typedQ.trim() != "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Searching.....</p> : ''}
 

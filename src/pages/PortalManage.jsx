@@ -10,8 +10,11 @@ export default function PortalManage() {
     const [listPosition, setListPosition] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const previouslyActiveRef = useRef(null);
+    const [actionAsk, setActionAsk] = useState(false);
     const [query, setQuery] = useState('');
+    const [ischangeDb, setVhangeDb] = useState(false);
     const [typedQ, setTypeQ] = useState('');
+    const [nxtPage, setNxtPage] = useState(<button onClick={() => search(pagination.current_page + 1)}><i className="fas fa-arrow-left"></i> Load more <i className="fas fa-arrow-right"></i></button>);
 
     const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({
@@ -20,8 +23,58 @@ export default function PortalManage() {
         current_page: 0,
     });
 
+    const deleteUser = async (id, elementId) => {
+
+        let conf = '';
+        if (!actionAsk) {
+            conf = prompt("Type 'delete' to complete.")
+        }
+        console.log(elementId);
 
 
+        if (conf?.trim().toLowerCase() === "delete" || actionAsk) {
+
+
+
+            const response = await fetch(`/api/youth/${id}`, {
+                method: 'delete',
+            });
+
+            if (response.ok) {
+                setVhangeDb(true)
+                document.getElementById(elementId).classList.add('delol')
+                setTimeout(() => {
+                    const updated = data
+                        .map(group => ({
+                            ...group,
+                            youthUser: group.youthUser.filter(youth => youth.y_user.id !== id),
+                        }))
+                        .filter(group => group.youthUser.length > 0);
+                    setData(updated);
+                }, 1000);
+                setTimeout(() => {
+                    setVhangeDb(false)
+                }, 3000);
+
+            } else {
+                setVhangeDb(false)
+            }
+
+        }
+    }
+    const actionHandle = () => {
+        console.log(555);
+
+        if (actionAsk) {
+            console.log(44);
+            localStorage.setItem('popaction', false)
+            setActionAsk(false);
+        } else {
+            console.log(3);
+            setActionAsk(true);
+            localStorage.setItem('popaction', true)
+        }
+    }
     const search = async (page = 1) => {
         if (isLoading) {
             return
@@ -86,15 +139,46 @@ export default function PortalManage() {
 
 
 
+
+    useEffect(() => {
+        let action = localStorage.getItem('popaction')
+        if (action === 'true') {
+            setActionAsk(true)
+        } else {
+            setActionAsk(false)
+        }
+    }, [actionAsk]);
     useEffect(() => {
         search()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if (!data.length || !data[0].youthUser) {
+            setNxtPage(<p>No records found.</p>);
+        } else if (pagination.total_pages === pagination.current_page) {
+            setNxtPage(<p><i className="fas fa-thumbs-up"></i> You're all caught up</p>);
+        } else {
+            setNxtPage(
+                <button onClick={() => search(pagination.current_page + 1)}>
+                    <i className="fas fa-arrow-left"></i> Load more <i className="fas fa-arrow-right"></i>
+                </button>
+            );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, pagination]);
+
     let count = 1;
 
     return <>
         <div className="portalManage">
+            {ischangeDb ? (<>
+                <div className={`responseAction`}>
+                    <ul><i className="fas fa-check"></i></ul>
+                    <ul>
+                        <p>Deleted Successfully</p>
+                    </ul>
+                </div></>) : ''}
             <div className="dashPortalManage">
                 <div className="hd">
                     <i className="fas fa-hat-wizard"></i>
@@ -114,8 +198,16 @@ export default function PortalManage() {
                             }
                         }} />
                     </li>
+
+                </div><div className="wrrmm">
+
+                    <div className={`rmm ${actionAsk ? 'rbb' : 'tr'}`} >
+                        <button onClick={actionHandle}></button> <p onClick={actionHandle}>Dont ask again.</p>
+                    </div>
                 </div>
                 <div className="portalManageBody">
+                    {isLoading && typedQ.trim() == "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Fetching.....</p> : ''}
+                    {isLoading && typedQ.trim() != "" ? <p className='sfor'><i className="fas fa-spinner fa-spin"></i> Searching.....</p> : ''}
 
                     {data.map((item, idx) =>
                         item.youthUser.map((youth) => (
@@ -165,8 +257,8 @@ export default function PortalManage() {
                                     </section>
 
                                     <div className="skills_list ar">
-                                        <button>Approved</button>
-                                        <button>Delete</button>
+                                        <button>Approve</button>
+                                        <button onClick={() => deleteUser(youth.y_user.id, `infoView${idx}`)}>Delete</button>
                                     </div>
                                 </ul>
                                 <div className="information" >
@@ -186,8 +278,8 @@ export default function PortalManage() {
                                             </li>
                                         </section>
                                         <section className="actReq">
-                                            <button>Approved</button>
-                                            <button>Delete</button>
+                                            <button>Approve</button>
+                                            <button onClick={() => deleteUser(youth.y_user.id, `infoView${idx}`)}>Delete</button>
                                         </section>
                                     </div>
                                     <div className={`informBody`}>
@@ -319,9 +411,12 @@ export default function PortalManage() {
                                     </div>
                                 </div>
                             </Motion.ol>
+
                         ))
                     )}
-
+                    <ul className={`nxtPage ${isLoading ? 'isloadOp' : ''}`}>
+                        {nxtPage}
+                    </ul>
                 </div>
             </div>
         </div >

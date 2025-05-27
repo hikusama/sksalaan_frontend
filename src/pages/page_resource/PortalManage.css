@@ -41,18 +41,154 @@
 .bodyPortalManage {
     min-height: 0;
     display: grid;
-    grid-template-rows: auto minmax(0, 1fr) 1rem;
+    grid-template-rows: auto auto minmax(0, 1fr) 1rem;
 
+}
+
+
+.wrrmm {
+    position: relative;
+    width: 100%;
+    padding-bottom: 2rem;
 }
 
 .portalManageBody ol ul {
     background-color: #274451;
 }
 
-.headContMain {
-    padding: 1rem 0 2rem;
+.rmm {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: .8rem;
+
+}
+
+.rmm p {
+    cursor: pointer;
+}
+
+.rmm button {
+    cursor: pointer;
+    position: relative;
+    width: 2.5rem;
+    border: none;
+    height: .35rem;
+    border-radius: 4rem;
+    background-color: rgba(255, 255, 255, 0.459);
+}
+
+.rmm button::after {
+    height: 1.1rem;
+    width: .4rem;
+    background-color: rgb(255, 255, 255);
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-radius: 4rem;
+    transform: translate(-50%, -50%);
+}
+
+.wrrmm .rbb button {
+    background: rgba(250, 163, 0, 0.459);
+}
+
+.wrrmm .rbb button::after {
+    height: 1.1rem;
+    width: .4rem;
+    background-color: orange;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    border-radius: 4rem;
+    transform: translate(-50%, -50%);
+    animation: rbbin 1s ease-out 0s 1;
+
+}
+
+.wrrmm .tr button::after {
+    animation: rbbout 1s ease-out 0s 1;
+}
+
+@keyframes rbbin {
+    0% {
+        left: 0;
+
+    }
+
+    20% {
+        transform: translate(-50%, -50%) rotate(90deg);
+    }
+
+    80% {
+        transform: translate(-50%, -50%) rotate(90deg);
+        left: 100%;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(0);
+
+    }
+}
+
+@keyframes rbbout {
+    0% {
+        left: 100%;
+    }
+
+    20% {
+        transform: translate(-50%, -50%) rotate(-90deg);
+    }
+
+    80% {
+        transform: translate(-50%, -50%) rotate(-90deg);
+        left: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(0);
+
+    }
+}
+
+.headContMain {
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.portalManage {
+    position: relative;
+}
+
+.portalManage .nxtPage button,
+.portalManage .nxtPage{
+    color: white;
+}
+.portalManage .responseAction {
+    position: absolute;
+    top: 2rem !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    background-color: #274451;
+    border: solid 1px rgba(255, 255, 255, 0.355);
+    animation: res .3s ease-out 0s 1;
+}
+
+@keyframes res {
+    0% {
+        opacity: 0;
+        top: -10rem;
+    }
 }
 
 .headContMain li {
@@ -79,10 +215,22 @@
 }
 
 .portalManageBody ol {
+
+    transition: .3s;
     align-items: center;
     display: flex;
     flex-direction: column;
 }
+.portalManageBody .delol{
+    animation: delol 1s ease-out 0s 1;
+}
+@keyframes delol {
+    100%{
+        opacity: 0;
+        transform: translateX(8rem);
+    }
+}
+
 
 .portalManageBody {
     scrollbar-color: #d1cfcf90 var(--main);
@@ -181,7 +329,7 @@
     border-radius: 0 0 .4rem .4rem;
 }
 
-.portalManageBody .intab{
+.portalManageBody .intab {
     height: 0;
 }
 
@@ -191,8 +339,7 @@
     gap: .5rem;
 }
 
-.portalManage
-.infoHead {
+.portalManage .infoHead {
     padding: .7rem .7rem 0;
     display: flex;
     justify-content: space-between;
