@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import './pages/page_resource/Login.css'
+import './pages/page_resource/Overview.css'
 import './pages/page_resource/Portal.css'
 import './pages/page_resource/Post.css'
 import './pages/page_resource/Notif.css'
