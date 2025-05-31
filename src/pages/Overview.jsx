@@ -1,5 +1,38 @@
 
+import { useState } from "react";
+import Cards from "./overview/Cards.jsx";
+
+
+
+
 export default function Overview() {
+    const [sex, setSex] = useState(
+        [{ name: 'Male', value: 24 },
+        { name: 'Female', value: 44 },]
+    );
+
+    const [gender, setGender] = useState(
+        [
+            { name: 'Gay', value: 16 },
+            { name: 'Bi-sexual', value: 8 },
+            { name: 'Bading', value: 12 },
+            { name: 'N/A', value: 42 },
+            { name: 'Others', value: 12 },
+        ]
+    );
+    const [age, setAge] = useState(
+        [
+            { name: '15-19', value: 16 },
+            { name: '20-24', value: 42 },
+            { name: '25-30', value: 12 },
+        ]
+    );
+    const [youthType, setYouthType] = useState(
+        [
+            { name: 'OSY', value: 26 },
+            { name: 'ISY', value: 22 },
+        ]
+    );
     return <>
         <div id="overview">
             <div className="bartop">
@@ -30,7 +63,6 @@ export default function Overview() {
                         <div className="salaanmap">
                             <div className="cir1"></div>
                             <div className="cir2"></div>
-                            <div className="sq1"></div>
                             <div className="sq2"></div>
                             <div className="mapCont">
 
@@ -62,20 +94,35 @@ export default function Overview() {
                         </table>
                     </div>
                 </div>
-                <div className="ovOthers">
+                <div className="ovCardYouth">
                     <ol>
                         <h3>Sex</h3>
+                        <section>
+                            <Cards data={sex} />
+                        </section>
                     </ol>
                     <ol>
                         <h3>Gender</h3>
+                        <section>
+
+                            <Cards data={gender} />
+                        </section>
                     </ol>
                     <ol>
                         <h3>Age</h3>
+                        <section>
+                            <Cards data={age} />
+
+                        </section>
                     </ol>
                     <ol>
                         <h3>Youth type</h3>
+                        <section>
+                            <Cards data={youthType} />
+                        </section>
                     </ol>
                 </div>
+
             </div>
         </div>
     </>
