@@ -98,7 +98,8 @@
     padding-top: .8rem;
     overflow: hidden;
     animation: flpane .2s ease-in 0s 1;
-    height: 23rem;
+    max-height: 23rem;
+
 }
 
 @keyframes flpane {
@@ -129,9 +130,10 @@
     align-items: center;
 }
 
+.valset,
 .filterpane li:hover {
     color: white;
-    background-color: #3e758d6e;
+    background-color: #3e758d6e !important;
 
 }
 
@@ -163,7 +165,6 @@
 
 .contfil {
     padding: 1rem 0;
-    max-height: 8rem;
     display: flex;
     position: relative;
     justify-content: center;
@@ -199,6 +200,9 @@
     border-radius: .4rem;
     font-size: .9rem;
 }
+.nostate{
+    border: none !important;    
+}
 .bsub:hover{
     background-color: #26799d2f;
 
@@ -209,7 +213,7 @@
     justify-content: center;
     gap: .2rem;
 }
-.ag ol input{
+.ag ol select{
     width: 5rem;
     background: transparent;
     border: none;
@@ -218,6 +222,7 @@
     height: 1.5rem;
     border-radius: .3rem;
     color: white;
+    background-color: #26799d;
 }
 .filterbych h4 {
     border-bottom: solid 1px rgba(255, 255, 255, 0.685);

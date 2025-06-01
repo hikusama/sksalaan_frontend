@@ -67,7 +67,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#fff"
-    className="vl">{`Value: ${value}`}</text>
+    className="vl">{`Youth: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -96,7 +96,7 @@ export default function Cards({ data = [] }) {
         data={data}
         cx="50%"
         cy="50%"
-        innerRadius={30}
+        innerRadius={40}
         outerRadius={50}
         fill="#8884d8"
         dataKey="value"
